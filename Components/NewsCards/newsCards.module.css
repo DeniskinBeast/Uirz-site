@@ -1,0 +1,13 @@
+.card {
+    min-width: 300px;
+    margin: 4em 0;
+    box-shadow: 0 0 20px #ccc;
+}
+
+.card__title {
+    color: #607afc;
+}
+
+.card__body {
+    padding: 1em;
+}

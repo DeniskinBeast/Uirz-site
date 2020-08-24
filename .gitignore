@@ -1,0 +1,7 @@
+/.idea
+/dist
+/node_modules
+/.next
+configs.json
+/server/Docs
+/public

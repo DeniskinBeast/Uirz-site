@@ -1,0 +1,58 @@
+.navbar {
+    background: #607afc;
+}
+
+.nav_brand {
+    color: #fff;
+}
+
+.nav_brand:before {
+    background: url("../../public/dom.png");
+}
+
+.nav_link {
+    color: #f4f4f4;
+    cursor: pointer;
+}
+
+.nav_link {
+    margin-right: 1em !important;
+}
+
+.nav_btn {
+    color: #fff;
+    background: #607afc;
+}
+
+.nav_btn:hover {
+    color: #607afc;
+    background: #fff;
+    cursor: pointer;
+}
+
+.dropdown_item {
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 500px) {
+    .dropdown_item {
+        white-space: pre-wrap;
+    }
+}
+
+.dropdown_item:hover {
+    color: #fff;
+    background: #607afc;
+}
+
+.navbar_collapse {
+    justify-content: flex-end;
+}
+
+.navbar_toggler:hover, .navbar_toggler:focus {
+    outline: none !important;
+}
+
+.navbar_toggler_icon {
+    background: url("../../public/toggler_v1.png");
+}

@@ -1,0 +1,21 @@
+.header {
+    width: 100%;
+    height: auto;
+    /*background-image: url("../public/uirz_shapka.jpg");*/
+    /*background-size: cover;*/
+    /*background-position: center;*/
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 300px;
+    min-width: 100%;
+    background: rgba(244, 244, 244, 0.5);
+}
+
+.bla_img {
+    width: inherit;
+    height: inherit;
+}

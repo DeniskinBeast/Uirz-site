@@ -1,0 +1,11 @@
+.btn_up {
+    display: none;
+    position: fixed;
+    top: 85%;
+    left: 30px;
+    z-index: 8888;
+}
+
+.btn_up:hover {
+    background: transparent;
+}

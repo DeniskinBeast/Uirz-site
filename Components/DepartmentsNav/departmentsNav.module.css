@@ -1,0 +1,35 @@
+.nav {
+    background: #607afc;
+    margin: 10px 15px 20px 15px;
+    border-radius: .25rem;
+    justify-content: center;
+}
+
+.nav_item {
+    white-space: pre-wrap;
+    font-size: 12px;
+    background: #607afc;
+    padding: 10px;
+    color: white;
+}
+
+.nav_item:hover {
+    background: #fff;
+    color: #607afc;
+}
+
+.navbar_collapse {
+    justify-content: center;
+}
+
+.navbar_toggler:hover, .navbar_toggler:focus {
+    outline: none !important;
+}
+
+.navbar_toggler_icon {
+    background: url("../../public/toggler_v1.png");
+}
+
+.navbar_nav {
+    align-items: center;
+}

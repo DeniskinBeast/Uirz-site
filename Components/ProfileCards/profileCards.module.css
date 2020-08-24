@@ -1,0 +1,12 @@
+.card {
+    margin: 30px 0 30px 0;
+}
+
+.card__img {
+    border-radius: 0.40rem;
+    margin-top: 1.25rem;
+}
+
+.group {
+    margin-bottom: 2em;
+}

@@ -1,0 +1,44 @@
+body {
+    margin: 0
+}
+
+.page__title {
+    color: #607afc;
+    margin: 1em 0.1em 1em 0.1em;
+}
+
+.btn {
+    border: 1px solid #607afc;
+    color: #fff;
+    background: #607afc;
+}
+
+.btn_container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content {
+    margin: 56px 0;
+    position: relative;
+}
+
+.uninews_link {
+    float: right;
+}
+
+.uninews_link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.banner__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.banner {
+    margin-bottom: 10px;
+}
