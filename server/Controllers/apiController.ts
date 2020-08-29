@@ -3,6 +3,10 @@ import {Request, Response} from "express";
 import {Structure} from "../Models/Structure";
 import {LawNews} from "../Models/LawNews";
 import {InstNews} from "../Models/InstituteNews";
+import {ConstituentDocs} from "../Models/ConstituentDocs";
+import {CorruptionDocs} from "../Models/CorruptionDocs";
+import {LegislationStatusReports} from "../Models/LegislationStatusReports";
+import {Publications} from "../Models/Publications";
 
 // @ts-ignore
 export async function structurePage(req: Request, res: Response) {
@@ -69,4 +73,64 @@ export async function InstNewsPage(req: Request, res: Response) {
     });
 
     res.send(JSON.stringify(instNews));
+}
+
+// @ts-ignore
+export async function constituentDocsPage(req: Request, res: Response) {
+    const constituentDocs = await ConstituentDocs.findAll({
+        order: [
+            ["id", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(constituentDocs));
+}
+
+
+// @ts-ignore
+export async function corruptionCounteringPageLocalActs(req: Request, res: Response) {
+    const localActs = await CorruptionDocs.findAll(
+        {
+            where: {
+                report: false
+            }
+        }
+    );
+
+    res.send(JSON.stringify(localActs));
+}
+
+// @ts-ignore
+export async function corruptionCounteringPageReports(req: Request, res: Response) {
+    const corruptionReports = await CorruptionDocs.findAll(
+        {
+            where: {
+                report: true
+            }
+        }
+    );
+
+    res.send(JSON.stringify(corruptionReports));
+}
+
+// @ts-ignore
+export async function legislationStatusPage(req: Request, res: Response) {
+    const statusReports = await LegislationStatusReports.findAll({
+        order: [
+            ["year", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(statusReports));
+}
+
+// @ts-ignore
+export async function publicationsPage(req: Request, res: Response) {
+    const publications = await Publications.findAll({
+            order: [
+                ["year", "DESC"]
+            ]
+        });
+
+    res.send(JSON.stringify(publications));
 }

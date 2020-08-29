@@ -5,6 +5,7 @@ import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
 import {UpButton} from "../Components/UpButton/UpButton";
+import Link from "next/link";
 
 export default function LegalExpertisePage() {
     return (
@@ -18,8 +19,8 @@ export default function LegalExpertisePage() {
                 <h1 id="legal_expertise" className="text-center page__title">Правовая экспертиза нормативных правовых актов</h1>
                     <p>Институт проводит правовую экспертизу проектов нормативных правовых актов Свердловской области и иных
                         документов, выполнение которой осуществляют <a href="?x=struc_otdel2" className="ref"> Экспертный
-                            совет</a> и <a href="?x=struc_otdel3" className="ref">отдел разработки проектов нормативных
-                            правовых актов</a>.</p> <p>В соответствии с Уставом Института <a href="?x=struc_otdel2"
+                            совет</a> и <Link href="/structure" as="structure"><a>отдел разработки проектов нормативных
+                            правовых актов</a></Link>.</p> <p>В соответствии с Уставом Института <a href="?x=struc_otdel2"
                                                                                              className="ref"> Экспертный
                     совет</a> проводит экспертизу:</p>
                     <p>1) проектов законов Свердловской области, внесённых в порядке зако-нодательной инициативы в
@@ -52,9 +53,8 @@ export default function LegalExpertisePage() {
                         депутатов палат Законодательного Собрания Свердловской области, государственных органов Свердловской
                         области, органов местного самоуправления муниципальных образований и общественных организаций.</p>
                     <p>С 1 января 2011 года правовую экспертизу проектов нормативных правовых актов осуществляет <a
-                        href="?x=struc_otdel2" className="ref"> Экспертный совет</a> и <a href="?x=struc_otdel3"
-                                                                                          className="ref">отдел разработки
-                        проектов нормативных правовых актов</a>.</p>
+                        href="?x=struc_otdel2" className="ref"> Экспертный совет</a> и <Link href="/structure" as="structure"><a>отдел разработки
+                        проектов нормативных правовых актов</a></Link>.</p>
 
                     <h3 className="text-center page__title">В 2011 году Институтом подготовлено:</h3>
                     <p>230 заключений по проектам законов Свердловской

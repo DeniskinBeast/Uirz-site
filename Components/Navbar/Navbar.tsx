@@ -25,12 +25,17 @@ export function Navbar() {
                         Об институте
                     </button>
                     <div className="dropdown-menu">
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Общие сведения</a>
                         <Link href="/structure" as="structure">
                             <a className={"dropdown-item " + styles.dropdown_item}>Структура института</a>
                         </Link>
                         <Link href="/constituent_docs" as="constituent_docs">
                             <a className={"dropdown-item " + styles.dropdown_item}>Учредительные документы</a>
+                        </Link>
+                        <Link href="/uniNews/[uniNewsPage]" as="/uniNews/0">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Новости института</a>
+                        </Link>
+                        <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Новости законодательства</a>
                         </Link>
                         <ScrollLink className={"dropdown-item " + styles.dropdown_item} href="" activeClass="active" to="contacts" smooth={true} offset={-50}>Контакты</ScrollLink>
                     </div>
@@ -51,7 +56,9 @@ export function Navbar() {
                             <a className={"dropdown-item " + styles.dropdown_item}>Систематизация и анализ законодательства</a>
                         </Link>
                         <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг федерального и региональгого законодательства</a>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Противодействие коррупции</a>
+                        <Link href="/corruption_countering" as="corruption_countering">
+                            <a className={"dropdown-item " + styles.dropdown_item} href="">Противодействие коррупции</a>
+                        </Link>
                     </div>
                 </li>
                 <li className="nav-item dropdown">
@@ -60,10 +67,18 @@ export function Navbar() {
                         Доклады, обзоры, публикации
                     </button>
                     <div className="dropdown-menu">
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Доклады о состоянии законодательства</a>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Выступления и участия в мероприятиях</a>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Тематические обзоры законодательства</a>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Публикации</a>
+                        <Link href="/legislation_status" as="legislation_status">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Доклады о состоянии законодательства</a>
+                        </Link>
+                        <Link href="/events_participation" as="events_participation">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Выступления и участия в мероприятиях</a>
+                        </Link>
+                        <Link href="/legislation_reviews" as="legislation_reviews">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Тематические обзоры законодательства</a>
+                        </Link>
+                        <Link href="/publications" as="publications">
+                            <a className={"dropdown-item " + styles.dropdown_item}>Публикации</a>
+                        </Link>
                     </div>
                 </li>
                 <li className="nav-item">

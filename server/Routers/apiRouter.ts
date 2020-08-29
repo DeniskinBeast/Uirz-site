@@ -1,10 +1,11 @@
 import {Router} from "express";
 
 import {
+    constituentDocsPage, corruptionCounteringPageLocalActs, corruptionCounteringPageReports,
     InstNewsPage,
-    lawNewsPage,
+    lawNewsPage, legislationStatusPage,
     mainPageLastInstNews,
-    mainPageLastLawNews,
+    mainPageLastLawNews, publicationsPage,
     structurePage
 } from "../Controllers/apiController";
 
@@ -19,3 +20,13 @@ apiRouter.get("/lastLawNews", mainPageLastLawNews);
 apiRouter.get("/lawNews/:pageNumber([0-9])", lawNewsPage);
 
 apiRouter.get("/uniNews/:pageNumber([0-9])", InstNewsPage);
+
+apiRouter.get("/constituent_docs", constituentDocsPage);
+
+apiRouter.get("/corruption/local_acts", corruptionCounteringPageLocalActs);
+
+apiRouter.get("/corruption/corruption_reports", corruptionCounteringPageReports);
+
+apiRouter.get("/legislation_status_reports", legislationStatusPage);
+
+apiRouter.get("/publications", publicationsPage);
