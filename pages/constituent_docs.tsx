@@ -5,6 +5,7 @@ import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
 import {DocsCards} from "../Components/DocsCards/DocsCards";
+import {LoadingComponent} from "../Components/Loading";
 
 import {DocsCardData} from "../Types/DocsCardData";
 
@@ -38,6 +39,7 @@ export default class ConstituentDocsPage extends Component<ConstituentDocsPageSt
                 <Header/>
                 <div className="container">
                     <h1 className="page__title text-center">Учредительные документы</h1>
+                    {docsCards.length == 0 && <LoadingComponent/>}
                     <DocsCards docsCards={docsCards}/>
                 </div>
             </div>

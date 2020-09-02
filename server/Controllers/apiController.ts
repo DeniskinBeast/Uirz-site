@@ -60,6 +60,13 @@ export async function lawNewsPage(req: Request, res: Response) {
     res.send(JSON.stringify(lawNews));
 }
 
+// @ts-ignore
+export async function lawNewsPageNewsCount(req: Request, res: Response) {
+    const lawNewsCount = await LawNews.count();
+
+    res.send(JSON.stringify(lawNewsCount));
+}
+
 export async function InstNewsPage(req: Request, res: Response) {
     const offset = 6;
 

@@ -3,6 +3,8 @@ import ReactHtmlParser from "react-html-parser";
 
 import styles from "./modalInfo.module.css";
 
+import {deleteSymbols} from "../../Scripts/deleteSymbols";
+
 interface ModalInfoProps {
     id: string;
     title: string;
@@ -10,13 +12,9 @@ interface ModalInfoProps {
     pic: string;
     text: string;
 }
-//TODO прееименовать это (а лучше придумать более гуманный и менее затратный способ)
-function replaceShit(text: string): string {
-    return text.replace(/\\r\\n/g, ' ');
-}
 
 export function ModalInfo({id, title, subtitle, pic, text}: ModalInfoProps) {
-    replaceShit(text);
+    const clearText = deleteSymbols(text);
     return (
         <div className="modal fade" id={id} tabIndex={-1} role="dialog" aria-labelledby="modal_info_1_title" aria-hidden="true">
             <div className="modal-dialog" role="document">
@@ -35,7 +33,7 @@ export function ModalInfo({id, title, subtitle, pic, text}: ModalInfoProps) {
                             </div>
                             <h5 className={styles.header__subtitle}>{subtitle}</h5>
                         </div>
-                        <div>{ReactHtmlParser(replaceShit(text))}</div>
+                        <div>{ReactHtmlParser(clearText)}</div>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary"

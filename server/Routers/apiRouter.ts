@@ -3,7 +3,7 @@ import {Router} from "express";
 import {
     constituentDocsPage, corruptionCounteringPageLocalActs, corruptionCounteringPageReports,
     InstNewsPage,
-    lawNewsPage, legislationStatusPage,
+    lawNewsPage, lawNewsPageNewsCount, legislationStatusPage,
     mainPageLastInstNews,
     mainPageLastLawNews, publicationsPage,
     structurePage
@@ -17,7 +17,9 @@ apiRouter.get("/lastInstNews", mainPageLastInstNews);
 
 apiRouter.get("/lastLawNews", mainPageLastLawNews);
 
-apiRouter.get("/lawNews/:pageNumber([0-9])", lawNewsPage);
+apiRouter.get("/lawNews/:pageNumber([0-9]*)", lawNewsPage);
+
+apiRouter.get("/lawNewsCount", lawNewsPageNewsCount);
 
 apiRouter.get("/uniNews/:pageNumber([0-9])", InstNewsPage);
 

@@ -1,10 +1,13 @@
-import {Layout} from "../Components/Layout";
 import React, {Component} from "react";
+
+import {DocsCardData} from "../Types/DocsCardData";
+
+import {Layout} from "../Components/Layout";
 import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
-import {DocsCardData} from "../Types/DocsCardData";
 import {DocsCards} from "../Components/DocsCards/DocsCards";
 import {Footer} from "../Components/Footer";
+import {LoadingComponent} from "../Components/Loading";
 
 interface CorruptionCounteringPageState {
     localActs: DocsCardData[],
@@ -46,8 +49,10 @@ export default class CorruptionCounteringPage extends Component<CorruptionCounte
                     <div className="container">
                         <h1 className="text-center page__title">Противодействие коррупции</h1>
                         <h2 className="text-center page__title">Локальные акты</h2>
+                        {localActs.length == 0 && <LoadingComponent/>}
                         <DocsCards docsCards={localActs}/>
                         <h2 className="text-center page__title">Отчетная информация</h2>
+                        {corruptionReports.length == 0 && <LoadingComponent/>}
                         <DocsCards docsCards={corruptionReports}/>
                         <p className="text-center"><strong>Телефон для сообщения информации о коррупционных проявлениях:</strong></p>
                         <p className="text-center"><strong>(343) 358-18-40</strong></p>

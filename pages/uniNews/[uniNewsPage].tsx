@@ -9,6 +9,7 @@ import {Navbar} from "../../Components/Navbar/Navbar";
 import {Header} from "../../Components/Header";
 import {NewsCards} from "../../Components/NewsCards/NewsCards";
 import {Footer} from "../../Components/Footer";
+import {LoadingComponent} from "../../Components/Loading";
 
 interface UniNewsPageProps {
     page: number;
@@ -58,6 +59,7 @@ export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPage
                     <Header/>
                     <h1 id="instNews" className="text-center page__title">Новости института</h1>
                     <div className="container">
+                        {uniNews.length == 0 && <LoadingComponent/>}
                         <NewsCards newsCards={uniNews}/>
                         <nav aria-label="Law News pagination">
                             <ul className="pagination justify-content-center">

@@ -6,6 +6,7 @@ import {Layout} from "../Components/Layout";
 import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {DocsCards} from "../Components/DocsCards/DocsCards";
+import {LoadingComponent} from "../Components/Loading";
 
 interface PublicationsPageState {
     publications: DocsCardData[]
@@ -44,6 +45,7 @@ export default class PublicationsPage extends Component<PublicationsPageState> {
                     <Header/>
                     <div className="container">
                         <h1 className="text-center page__title">Публикации</h1>
+                        {publications.length == 0 && <LoadingComponent/>}
                         <h2 className="text-center page__title">2009 Год:</h2>
                         <DocsCards docsCards={publications2009}/>
                         <h2 className="text-center page__title">2010 Год:</h2>

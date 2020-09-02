@@ -7,6 +7,7 @@ import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
 import {DocsCards} from "../Components/DocsCards/DocsCards";
+import {LoadingComponent} from "../Components/Loading";
 
 interface LegislationStatusPageState {
     statusReports: DocsCardData[]
@@ -38,6 +39,7 @@ export default class LegislationStatusPage extends Component<LegislationStatusPa
                     <Header/>
                     <div className="container">
                         <h1 className="text-center page__title">Доклады о состоянии законодательства</h1>
+                        {statusReports.length == 0 && <LoadingComponent/>}
                         <DocsCards docsCards={statusReports}/>
                     </div>
                 </div>

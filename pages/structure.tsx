@@ -1,5 +1,8 @@
 import React, {Component} from "react";
 
+import "isomorphic-fetch";
+import {ProfileCardData} from "../Types/ProfileCardData";
+
 import {ProfileCards} from "../Components/ProfileCards/ProfileCards";
 import {Layout} from "../Components/Layout";
 import {Navbar} from "../Components/Navbar/Navbar";
@@ -7,9 +10,7 @@ import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
 import {DepartmentsNav} from "../Components/DepartmentsNav/DepartmentsNav";
 import {UpButton} from "../Components/UpButton/UpButton";
-
-import "isomorphic-fetch";
-import {ProfileCardData} from "../Types/ProfileCardData";
+import {LoadingComponent} from "../Components/Loading";
 
 interface StructurePageState {
     profileCards_1: ProfileCardData[];
@@ -58,7 +59,6 @@ export default class StructurePage extends Component<StructurePageState> {
     }
 
     render(): React.ReactElement {
-        // @ts-ignore
         const {profileCards_1, profileCards_2, profileCards_3, profileCards_5, profileCards_6, profileCards_7} = this.state;
         return (
             <>
@@ -69,10 +69,15 @@ export default class StructurePage extends Component<StructurePageState> {
                     <DepartmentsNav/>
                     <UpButton to="sector_1"/>
                     <div className="container">
+                        {profileCards_1.length == 0 || profileCards_7.length == 0 && <LoadingComponent/>}
                         <ProfileCards profileCards={profileCards_1.concat(profileCards_7)} sectorId={1}/>
+                        {profileCards_2.length == 0 && <LoadingComponent/>}
                         <ProfileCards profileCards={profileCards_2} sectorId={2}/>
+                        {profileCards_3.length == 0 && <LoadingComponent/>}
                         <ProfileCards profileCards={profileCards_3} sectorId={3}/>
+                        {profileCards_5.length == 0 && <LoadingComponent/>}
                         <ProfileCards profileCards={profileCards_5} sectorId={5}/>
+                        {profileCards_6.length == 0 && <LoadingComponent/>}
                         <ProfileCards profileCards={profileCards_6} sectorId={6}/>
                     </div>
                 </div>
