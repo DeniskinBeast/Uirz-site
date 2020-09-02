@@ -83,6 +83,13 @@ export async function InstNewsPage(req: Request, res: Response) {
 }
 
 // @ts-ignore
+export async function instNewsPageNewsCount(req: Request, res: Response) {
+    const instNewsCount = await InstNews.count();
+
+    res.send(JSON.stringify(instNewsCount));
+}
+
+// @ts-ignore
 export async function constituentDocsPage(req: Request, res: Response) {
     const constituentDocs = await ConstituentDocs.findAll({
         order: [

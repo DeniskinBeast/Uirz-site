@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {NextPageContext} from "next";
-import Link from "next/link";
-import {Link as ScrollLink} from "react-scroll";
+import ReactPaginate from "react-paginate";
 
 import {NewsCardData} from "../../Types/NewsCardData";
+import {scroll} from "../../Scripts/scroll";
+
 import {Layout} from "../../Components/Layout";
 import {Navbar} from "../../Components/Navbar/Navbar";
 import {Header} from "../../Components/Header";
@@ -17,7 +18,8 @@ interface UniNewsPageProps {
 
 interface UniNewsPageState {
     uniNews: NewsCardData[],
-    page: number;
+    page: number,
+    newsCount: number;
 }
 
 export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPageState> {
@@ -29,7 +31,8 @@ export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPage
 
     state: UniNewsPageState = {
         uniNews: [],
-        page: 0
+        page: 0,
+        newsCount: 0
     };
 
     fetchUniNewsPage = (pageNumber: number): void => {
@@ -38,7 +41,14 @@ export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPage
             .then(uniNews => this.setState({uniNews}))
     };
 
+    fetchUniNewsPageCount = (): void => {
+        fetch("/api/v1/uniNewsCount")
+            .then(response => response.json())
+            .then(newsCount => this.setState({newsCount}))
+    };
+
     componentDidMount(): void {
+        this.fetchUniNewsPageCount();
         this.fetchUniNewsPage(this.props.page);
     };
 
@@ -49,7 +59,9 @@ export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPage
     }
 
     render(): React.ReactElement {
-        const {uniNews} = this.state;
+        const {uniNews, newsCount} = this.state;
+        const newsPerPage = 6;
+        const pagesCount = newsCount / newsPerPage;
 
         return (
             <>
@@ -61,42 +73,17 @@ export default class UniNewsPage extends Component<UniNewsPageProps, UniNewsPage
                     <div className="container">
                         {uniNews.length == 0 && <LoadingComponent/>}
                         <NewsCards newsCards={uniNews}/>
-                        <nav aria-label="Law News pagination">
-                            <ul className="pagination justify-content-center">
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span className="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li className="page-item">
-                                    <Link href="/uniNews/[uniNewsPage]" as="/uniNews/0">
-                                        <ScrollLink href="" className="page-link" activeClass="active" to="instNews" smooth={true}>1</ScrollLink>
-                                    </Link>
-                                </li>
-                                <li className="page-item">
-                                    <Link href="/uniNews/[uniNewsPage]" as="/uniNews/1">
-                                        <ScrollLink href="" className="page-link" activeClass="active" to="instNews" smooth={true}>2</ScrollLink>
-                                    </Link>
-                                </li>
-                                <li className="page-item">
-                                    <Link href="/uniNews/[uniNewsPage]" as="/uniNews/2">
-                                        <ScrollLink href="" className="page-link" activeClass="active" to="instNews" smooth={true}>3</ScrollLink>
-                                    </Link>
-                                </li>
-                                <li className="page-item">
-                                    <Link href="/uniNews/[uniNewsPage]" as="/uniNews/3">
-                                        <ScrollLink href="" className="page-link" activeClass="active" to="instNews" smooth={true}>4</ScrollLink>
-                                    </Link>
-                                </li>
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span className="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
+                                       containerClassName={"pagination justify-content-center"}
+                                       pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}
+                                       previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
+                                       breakClassName={"page-item"} breakLinkClassName={"page-link"}
+                                       previousLabel={"Назад"} nextLabel={"Вперед"}
+                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       onPageChange={selectedItem => {
+                                           this.fetchUniNewsPage(selectedItem.selected);
+                                           scroll("instNews");
+                                       }}/>
                     </div>
                 </div>
                 <Footer/>

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {NextPageContext} from "next";
+import ReactPaginate from "react-paginate";
 
 import {NewsCardData} from "../../Types/NewsCardData";
 
@@ -9,8 +10,7 @@ import {Header} from "../../Components/Header";
 import {NewsCards} from "../../Components/NewsCards/NewsCards";
 import {Footer} from "../../Components/Footer";
 import {LoadingComponent} from "../../Components/Loading";
-import {Pagination} from "../../Components/Pagination";
-
+import {scroll} from "../../Scripts/scroll";
 
 interface LawNewsPageProps {
     page: number;
@@ -73,44 +73,17 @@ export default class LawNewsPage extends Component<LawNewsPageProps, LawNewsPage
                     <div className="container">
                         {lawNews.length == 0 && <LoadingComponent/>}
                         <NewsCards newsCards={lawNews}/>
-                        <Pagination pagesCount={pagesCount} label={"Law news pagination"} pageHref={"/lawNews/[lawNewsPage]"}
-                                    pageHrefAs={"/lawNews/"} scrollTo={"lawNews"}/>
-                        {/*<nav aria-label="Law News pagination">*/}
-                        {/*    <ul className="pagination justify-content-center">*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <a className="page-link" href="#" aria-label="Previous">*/}
-                        {/*                <span aria-hidden="true">&laquo;</span>*/}
-                        {/*                <span className="sr-only">Previous</span>*/}
-                        {/*            </a>*/}
-                        {/*        </li>*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">*/}
-                        {/*                <ScrollLink href="" className="page-link" activeClass="active" to="lawNews" smooth={true}>1</ScrollLink>*/}
-                        {/*            </Link>*/}
-                        {/*        </li>*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <Link href="/lawNews/[lawNewsPage]" as="/lawNews/1">*/}
-                        {/*                <ScrollLink href="" className="page-link" activeClass="active" to="lawNews" smooth={true}>2</ScrollLink>*/}
-                        {/*            </Link>*/}
-                        {/*        </li>*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <Link href="/lawNews/[lawNewsPage]" as="/lawNews/2">*/}
-                        {/*                <ScrollLink href="" className="page-link" activeClass="active" to="lawNews" smooth={true}>3</ScrollLink>*/}
-                        {/*            </Link>*/}
-                        {/*        </li>*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <Link href="/lawNews/[lawNewsPage]" as="/lawNews/3">*/}
-                        {/*                <ScrollLink href="" className="page-link" activeClass="active" to="lawNews" smooth={true}>4</ScrollLink>*/}
-                        {/*            </Link>*/}
-                        {/*        </li>*/}
-                        {/*        <li className="page-item">*/}
-                        {/*            <a className="page-link" href="#" aria-label="Next">*/}
-                        {/*                <span aria-hidden="true">&raquo;</span>*/}
-                        {/*                <span className="sr-only">Next</span>*/}
-                        {/*            </a>*/}
-                        {/*        </li>*/}
-                        {/*    </ul>*/}
-                        {/*</nav>*/}
+                        <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
+                                       containerClassName={"pagination justify-content-center"}
+                                       pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}
+                                       previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
+                                       breakClassName={"page-item"} breakLinkClassName={"page-link"}
+                                       previousLabel={"Назад"} nextLabel={"Вперед"}
+                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       onPageChange={selectedItem => {
+                                           this.fetchLawNewsPage(selectedItem.selected);
+                                           scroll("lawNews");
+                                       }}/>
                     </div>
                 </div>
                 <Footer/>

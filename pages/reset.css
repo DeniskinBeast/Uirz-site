@@ -42,3 +42,12 @@ body {
 .banner {
     margin-bottom: 10px;
 }
+
+.pagination {
+    flex-wrap: wrap;
+}
+
+.page-item {
+    color: #607afc;
+    cursor: pointer;
+}
