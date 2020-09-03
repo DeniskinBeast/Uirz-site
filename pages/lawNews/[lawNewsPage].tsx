@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {NextPageContext} from "next";
+// import {NextPageContext} from "next";
 import ReactPaginate from "react-paginate";
 
 import {NewsCardData} from "../../Types/NewsCardData";
@@ -11,34 +11,33 @@ import {NewsCards} from "../../Components/NewsCards/NewsCards";
 import {Footer} from "../../Components/Footer";
 import {LoadingComponent} from "../../Components/Loading";
 import {scroll} from "../../Scripts/scroll";
-
-interface LawNewsPageProps {
-    page: number;
-}
+import {UpdateComponent} from "../../Components/UpdateComponent";
 
 interface LawNewsPageState {
     lawNews: NewsCardData[],
     page: number,
+    isUpdating: boolean,
     newsCount: number;
 }
 
-export default class LawNewsPage extends Component<LawNewsPageProps, LawNewsPageState> {
-    static getInitialProps(context: NextPageContext) {
-        // @ts-ignore
-        const page: string = context.query.lawNewsPage.toString();
-        return {page: parseInt(page)};
-    }
+export default class LawNewsPage extends Component<LawNewsPageState> {
+    // static getInitialProps(context: NextPageContext) {
+    //     // @ts-ignore
+    //     const page: string = context.query.lawNewsPage.toString();
+    //     return {page: parseInt(page)};
+    // }
 
     state: LawNewsPageState = {
         lawNews: [],
         page: 0,
+        isUpdating: false,
         newsCount: 0
     };
 
     fetchLawNewsPage = (pageNumber: number): void => {
         fetch(`/api/v1/lawNews/${pageNumber}`)
             .then(response => response.json())
-            .then(lawNews => this.setState({lawNews: lawNews, page: pageNumber}))
+            .then(lawNews => this.setState({lawNews: lawNews, page: pageNumber, isUpdating: false}))
     };
 
     fetchLawNewsPageCount = (): void => {
@@ -49,17 +48,11 @@ export default class LawNewsPage extends Component<LawNewsPageProps, LawNewsPage
 
     componentDidMount(): void {
         this.fetchLawNewsPageCount();
-        this.fetchLawNewsPage(this.props.page);
+        this.fetchLawNewsPage(this.state.page);
     };
 
-    componentDidUpdate(prevProps: Readonly<LawNewsPageProps>): void {
-        if (this.props.page !== prevProps.page) {
-            this.fetchLawNewsPage(this.props.page);
-        }
-    }
-
     render(): React.ReactElement {
-        const {lawNews, newsCount} = this.state;
+        const {lawNews, newsCount, isUpdating} = this.state;
         const newsPerPage = 6;
         const pagesCount = newsCount / newsPerPage;
 
@@ -72,6 +65,7 @@ export default class LawNewsPage extends Component<LawNewsPageProps, LawNewsPage
                     <h1 id="lawNews" className="text-center page__title">Новости законодательства</h1>
                     <div className="container">
                         {lawNews.length == 0 && <LoadingComponent/>}
+                        {isUpdating && <UpdateComponent/>}
                         <NewsCards newsCards={lawNews}/>
                         <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
                                        containerClassName={"pagination justify-content-center"}
@@ -81,6 +75,7 @@ export default class LawNewsPage extends Component<LawNewsPageProps, LawNewsPage
                                        previousLabel={"Назад"} nextLabel={"Вперед"}
                                        activeClassName={"active"} disabledClassName={"disabled"}
                                        onPageChange={selectedItem => {
+                                           this.setState({isUpdating: true});
                                            this.fetchLawNewsPage(selectedItem.selected);
                                            scroll("lawNews");
                                        }}/>
