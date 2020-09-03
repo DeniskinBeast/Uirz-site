@@ -13,36 +13,36 @@ import {UpButton} from "../Components/UpButton/UpButton";
 import {LoadingComponent} from "../Components/Loading";
 
 interface StructurePageState {
-    profileCards_1: ProfileCardData[];
-    profileCards_2: ProfileCardData[];
-    profileCards_3: ProfileCardData[];
-    profileCards_5: ProfileCardData[];
-    profileCards_6: ProfileCardData[];
-    profileCards_7: ProfileCardData[];
+    unnamedCards: ProfileCardData[];
+    expertCards: ProfileCardData[];
+    developCards: ProfileCardData[];
+    systematizationCards: ProfileCardData[];
+    organizationCards: ProfileCardData[];
+    unnamed2Cards: ProfileCardData[];
 }
 
 export default class StructurePage extends Component<StructurePageState> {
     state: StructurePageState = {
-        profileCards_1: [],
-        profileCards_2: [],
-        profileCards_3: [],
-        profileCards_5: [],
-        profileCards_6: [],
-        profileCards_7: []
+        unnamedCards: [],
+        expertCards: [],
+        developCards: [],
+        systematizationCards: [],
+        organizationCards: [],
+        unnamed2Cards: []
     };
 
     fetchProfileCards = (): void => {
         fetch(`/api/v1/structure`)
             .then(response => response.json())
             .then(profileCards => {
-                const profileCards_1 = this.divideCards(profileCards, 1);
-                const profileCards_2 = this.divideCards(profileCards, 2);
-                const profileCards_3 = this.divideCards(profileCards, 3);
-                const profileCards_5 = this.divideCards(profileCards, 5);
-                const profileCards_6 = this.divideCards(profileCards, 6);
-                const profileCards_7 = this.divideCards(profileCards, 7);
+                const unnamedCards = this.divideCards(profileCards, 1);
+                const expertCards = this.divideCards(profileCards, 2);
+                const developCards = this.divideCards(profileCards, 3);
+                const systematizationCards = this.divideCards(profileCards, 5);
+                const organizationCards = this.divideCards(profileCards, 6);
+                const unnamed2Cards = this.divideCards(profileCards, 7);
 
-                this.setState({profileCards_1, profileCards_2, profileCards_3, profileCards_5, profileCards_6, profileCards_7})
+                this.setState({unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards})
             })
     };
 
@@ -59,7 +59,7 @@ export default class StructurePage extends Component<StructurePageState> {
     }
 
     render(): React.ReactElement {
-        const {profileCards_1, profileCards_2, profileCards_3, profileCards_5, profileCards_6, profileCards_7} = this.state;
+        const {unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards} = this.state;
         return (
             <>
                 <Layout title="Структура института"/>
@@ -69,16 +69,16 @@ export default class StructurePage extends Component<StructurePageState> {
                     <DepartmentsNav/>
                     <UpButton to="sector_1"/>
                     <div className="container">
-                        {profileCards_1.length == 0 || profileCards_7.length == 0 && <LoadingComponent/>}
-                        <ProfileCards profileCards={profileCards_1.concat(profileCards_7)} sectorId={1}/>
-                        {profileCards_2.length == 0 && <LoadingComponent/>}
-                        <ProfileCards profileCards={profileCards_2} sectorId={2}/>
-                        {profileCards_3.length == 0 && <LoadingComponent/>}
-                        <ProfileCards profileCards={profileCards_3} sectorId={3}/>
-                        {profileCards_5.length == 0 && <LoadingComponent/>}
-                        <ProfileCards profileCards={profileCards_5} sectorId={5}/>
-                        {profileCards_6.length == 0 && <LoadingComponent/>}
-                        <ProfileCards profileCards={profileCards_6} sectorId={6}/>
+                        {unnamedCards.length == 0 || unnamed2Cards.length == 0 && <LoadingComponent/>}
+                        <ProfileCards profileCards={unnamedCards.concat(unnamed2Cards)} sectorId={1}/>
+                        {expertCards.length == 0 && <LoadingComponent/>}
+                        <ProfileCards profileCards={expertCards} sectorId={2}/>
+                        {developCards.length == 0 && <LoadingComponent/>}
+                        <ProfileCards profileCards={developCards} sectorId={3}/>
+                        {systematizationCards.length == 0 && <LoadingComponent/>}
+                        <ProfileCards profileCards={systematizationCards} sectorId={5}/>
+                        {organizationCards.length == 0 && <LoadingComponent/>}
+                        <ProfileCards profileCards={organizationCards} sectorId={6}/>
                     </div>
                 </div>
                 <Footer/>

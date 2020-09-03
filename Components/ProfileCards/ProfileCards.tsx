@@ -32,6 +32,7 @@ function getSectorName(sectorId: number): string {
 function renderProfileCard(profileCard: ProfileCardData) {
     const full_name = profileCard.full_surname + " " + profileCard.full_name + " " + profileCard.full_midname;
     const photoPath = "/profile_photos/";
+    const cardId = `sector_${profileCard.sector}_${profileCard.id}`;
     return (
         <>
         <div className="col-md-4 col-lg-4">
@@ -49,11 +50,11 @@ function renderProfileCard(profileCard: ProfileCardData) {
                     <li className="list-group-item">Email: {profileCard.email}</li>
                 </ul>
                 <div className="card-footer">
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target={"#" + profileCard.id}>Подробнее</button>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target={"#" + cardId}>Подробнее</button>
                 </div>
             </div>
         </div>
-        <ModalInfo id={profileCard.id.toString()} title={profileCard.position} pic={photoPath + profileCard.pic} subtitle={full_name} text={profileCard.bio}/>
+        <ModalInfo id={cardId} title={profileCard.position} pic={photoPath + profileCard.pic} subtitle={full_name} text={profileCard.bio}/>
         </>
     )
 }
