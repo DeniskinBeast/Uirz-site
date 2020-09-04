@@ -7,6 +7,7 @@ import {ConstituentDocs} from "../Models/ConstituentDocs";
 import {CorruptionDocs} from "../Models/CorruptionDocs";
 import {LegislationStatusReports} from "../Models/LegislationStatusReports";
 import {Publications} from "../Models/Publications";
+import {Op} from "sequelize";
 
 // @ts-ignore
 export async function structurePage(req: Request, res: Response) {
@@ -67,6 +68,40 @@ export async function lawNewsPageNewsCount(req: Request, res: Response) {
     res.send(JSON.stringify(lawNewsCount));
 }
 
+export async function lawNewsPageByYear(req: Request, res: Response) {
+    const year = req.params.year;
+    const offset = 6;
+    const lawNewsByYear = await LawNews.findAll({
+        attributes: ["id", "pic", "text", "anons", "name", "date"],
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(lawNewsByYear));
+}
+
+export async function lawNewsPageCountByYear(req: Request, res: Response) {
+    const year = req.params.year;
+
+    const newsCount = await LawNews.count({
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        }
+    });
+
+    res.send(JSON.stringify(newsCount));
+}
+
 export async function InstNewsPage(req: Request, res: Response) {
     const offset = 6;
 
@@ -87,6 +122,40 @@ export async function instNewsPageNewsCount(req: Request, res: Response) {
     const instNewsCount = await InstNews.count();
 
     res.send(JSON.stringify(instNewsCount));
+}
+
+export async function instNewsPageByYear(req: Request, res: Response) {
+    const year = req.params.year;
+    const offset = 6;
+    const instNewsByYear = await InstNews.findAll({
+        attributes: ["id", "pic", "text", "anons", "name", "date"],
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(instNewsByYear));
+}
+
+export async function instNewsPageCountByYear(req: Request, res: Response) {
+    const year = req.params.year;
+
+    const newsCount = await InstNews.count({
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        }
+    });
+
+    res.send(JSON.stringify(newsCount));
 }
 
 // @ts-ignore

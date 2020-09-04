@@ -40,7 +40,7 @@ function renderNewsCard(newsCard: NewsCardData) {
             </div>
         </div>
             {newsCard.name.startsWith("Заседание Экспертного совета") && <ModalInfo id={cardId} title={"Заседание Экспертного совета"} subtitle={newsCard.date} pic={imgPath} text={newsCard.text}/>}
-            {newsCard.name=="Новые законы Свердловской области" && <ModalInfo id={cardId} title={"Новые законы Свердлловской области"} subtitle={newsCard.date} pic={imgPath} text={newsCard.text}/>}
+            {newsCard.name=="Новые законы Свердловской области" && <ModalInfo id={cardId} title={"Новые законы Свердловской области"} subtitle={newsCard.date} pic={imgPath} text={newsCard.text}/>}
             {(newsCard.name !== "Новые законы Свердловской области" && !newsCard.name.startsWith("Заседание Экспертного совета")) && <ModalInfo id={cardId} title={newsCard.name} subtitle={newsCard.date} pic={imgPath} text={newsCard.text}/>}
         </>
     )

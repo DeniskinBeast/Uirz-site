@@ -12,11 +12,13 @@ import {NewsCards} from "../../Components/NewsCards/NewsCards";
 import {Footer} from "../../Components/Footer";
 import {LoadingComponent} from "../../Components/Loading";
 import {UpdateComponent} from "../../Components/UpdateComponent";
+import {NewsFilter} from "../../Components/NewsFIlter/NewsFilter";
 
 interface UniNewsPageState {
     uniNews: NewsCardData[],
     page: number,
     isUpdating: boolean,
+    filteredYear: number,
     newsCount: number;
 }
 
@@ -31,13 +33,14 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
         uniNews: [],
         page: 0,
         isUpdating: false,
+        filteredYear: 0,
         newsCount: 0
     };
 
     fetchUniNewsPage = (pageNumber: number): void => {
         fetch(`/api/v1/uniNews/${pageNumber}`)
             .then(response => response.json())
-            .then(uniNews => this.setState({uniNews, isUpdating: false}))
+            .then(uniNews => this.setState({uniNews, isUpdating: false, filteredYear: 0, page: pageNumber}))
     };
 
     fetchUniNewsPageCount = (): void => {
@@ -46,15 +49,40 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
             .then(newsCount => this.setState({newsCount}))
     };
 
+    fetchUniNewsByYear = (year: number, pageNumber: number): void => {
+        fetch(`/api/v1/uniNewsByYear/${year}/${pageNumber}`)
+            .then(response => response.json())
+            .then(uniNews => this.setState({uniNews, isUpdating: false, filteredYear: year, page: pageNumber}))
+    };
+
+    fetchUniNewsCountByYear = (year: number): void => {
+        fetch(`/api/v1/uniNewsCountByYear/${year}`)
+            .then(response => response.json())
+            .then(newsCount => this.setState({newsCount}))
+    };
+
+    filterByYear = (year: number, pageNumber: number): void => {
+        this.setState({isUpdating: true});
+        if (year == 0)
+        {
+            this.fetchUniNewsPageCount();
+            this.fetchUniNewsPage(pageNumber);
+        }
+        else {
+            this.fetchUniNewsCountByYear(year);
+            this.fetchUniNewsByYear(year, pageNumber);
+        }
+    };
+
     componentDidMount(): void {
         this.fetchUniNewsPageCount();
         this.fetchUniNewsPage(this.state.page);
     };
 
     render(): React.ReactElement {
-        const {uniNews, newsCount, isUpdating} = this.state;
+        const {uniNews, newsCount, isUpdating, filteredYear, page} = this.state;
         const newsPerPage = 6;
-        const pagesCount = newsCount / newsPerPage;
+        const pagesCount = Math.ceil(newsCount / newsPerPage);
 
         return (
             <>
@@ -64,6 +92,7 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                     <Header/>
                     <h1 id="instNews" className="text-center page__title">Новости института</h1>
                     <div className="container">
+                        <NewsFilter fetchFunc={this.filterByYear}/>
                         {uniNews.length == 0 && <LoadingComponent/>}
                         {isUpdating && <UpdateComponent/>}
                         <NewsCards newsCards={uniNews}/>
@@ -74,9 +103,13 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                                        breakClassName={"page-item"} breakLinkClassName={"page-link"}
                                        previousLabel={"Назад"} nextLabel={"Вперед"}
                                        activeClassName={"active"} disabledClassName={"disabled"}
+                                       forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           this.fetchUniNewsPage(selectedItem.selected);
+                                           if (filteredYear !== 0)
+                                               this.fetchUniNewsByYear(filteredYear, selectedItem.selected);
+                                           else
+                                               this.fetchUniNewsPage(selectedItem.selected);
                                            scroll("instNews");
                                        }}/>
                     </div>
