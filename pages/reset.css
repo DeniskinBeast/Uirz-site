@@ -3,6 +3,10 @@ body {
     font-family: "Times New Roman", Times, serif;
 }
 
+.container>p {
+    font-size: 20px;
+}
+
 .page__title {
     color: #607afc;
     margin: 1em 0.1em 1em 0.1em;
@@ -22,10 +26,6 @@ body {
 .content {
     margin: 56px 0;
     position: relative;
-}
-
-.text {
-    font-size: 20px;
 }
 
 .uninews_link {

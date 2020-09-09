@@ -37,7 +37,9 @@ export function Navbar() {
                         <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
                             <a className={"dropdown-item " + styles.dropdown_item}>Новости законодательства</a>
                         </Link>
-                        <ScrollLink className={"dropdown-item " + styles.dropdown_item} href="" activeClass="active" to="contacts" smooth={true} offset={-50}>Контакты</ScrollLink>
+                        <Link href="/" as="/">
+                            <ScrollLink className={"dropdown-item " + styles.dropdown_item} href="" activeClass="active" to="contacts" smooth={true} offset={-50}>Контакты</ScrollLink>
+                        </Link>
                     </div>
                 </li>
                 <li className="nav-item dropdown">
@@ -55,7 +57,10 @@ export function Navbar() {
                         <Link href="/legislation_analysis" as="legislation_analysis">
                             <a className={"dropdown-item " + styles.dropdown_item}>Систематизация и анализ законодательства</a>
                         </Link>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг федерального и региональгого законодательства</a>
+                        <Link href="/federal_legislation_monitoring" as="/federal_legislation_monitoring">
+                            <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Федерального законодательства</a>
+                        </Link>
+                        <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Региональгого законодательства</a>
                         <Link href="/corruption_countering" as="corruption_countering">
                             <a className={"dropdown-item " + styles.dropdown_item} href="">Противодействие коррупции</a>
                         </Link>

@@ -3,8 +3,8 @@ import express, {Request, Response} from "express";
 import next from "next";
 import path from "path";
 import {parse} from "url";
-import {makeConnector} from "./SequielizeConnector/connector";
-import {initializeModels} from "./SequielizeConnector/modelsInitializer";
+import {makeConnector} from "./SequelizeConnector/connector";
+import {initializeModels} from "./SequelizeConnector/modelsInitializer";
 import {apiRouter} from "./Routers/apiRouter";
 import {contentRouter} from "./Routers/contentRouter";
 

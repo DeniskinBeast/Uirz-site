@@ -1,11 +1,28 @@
 import {Router} from "express";
 
 import {
-    constituentDocsPage, corruptionCounteringPageLocalActs, corruptionCounteringPageReports,
-    InstNewsPage, instNewsPageByYear, instNewsPageCountByYear, instNewsPageNewsCount,
-    lawNewsPage, lawNewsPageByYear, lawNewsPageCountByYear, lawNewsPageNewsCount, legislationStatusPage,
+    constituentDocsPage,
+    corruptionCounteringPageLocalActs,
+    corruptionCounteringPageReports,
+    federalLegislationMonitoringPageByMonth,
+    federalLegislationMonitoringPageByYear,
+    federalLegislationMonitoringPageLast,
+    InstNewsPage,
+    instNewsPageByYear,
+    instNewsPageCountByYear,
+    instNewsPageNewsCount,
+    lawNewsPage,
+    lawNewsPageByYear,
+    lawNewsPageCountByYear,
+    lawNewsPageNewsCount,
+    legislationReviewsPage,
+    legislationReviewsPageByYear,
+    legislationReviewsPageCountByYear,
+    legislationReviewsPageReviewsCount,
+    legislationStatusPage,
     mainPageLastInstNews,
-    mainPageLastLawNews, publicationsPage,
+    mainPageLastLawNews,
+    publicationsPage,
     structurePage
 } from "../Controllers/apiController";
 
@@ -42,3 +59,17 @@ apiRouter.get("/corruption/corruption_reports", corruptionCounteringPageReports)
 apiRouter.get("/legislation_status_reports", legislationStatusPage);
 
 apiRouter.get("/publications", publicationsPage);
+
+apiRouter.get("/legislationReviews/:pageNumber", legislationReviewsPage);
+
+apiRouter.get("/legislationReviewsCount", legislationReviewsPageReviewsCount);
+
+apiRouter.get("/legislationReviewsByYear/:year/:pageNumber", legislationReviewsPageByYear);
+
+apiRouter.get("/legislationReviewsCountByYear/:year", legislationReviewsPageCountByYear);
+
+apiRouter.get("/federalMonitoringLastReport", federalLegislationMonitoringPageLast);
+
+apiRouter.get("/federalMonitoringReportByYear/:year", federalLegislationMonitoringPageByYear);
+
+apiRouter.get("/federalMonitoringReportByMonth/:year/:month", federalLegislationMonitoringPageByMonth);

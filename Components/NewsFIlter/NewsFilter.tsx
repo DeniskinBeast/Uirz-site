@@ -3,29 +3,26 @@ import React from "react";
 import styles from "./newsFilter.module.css";
 
 interface NewsFilterProps {
-    fetchFunc: (year: number, pageNumber: number) => void
+    filterName: string,
+    fetchFunc: (year: number, pageNumber: number) => void,
+    filterItems: {itemValue: number, label: string}[]
 }
 
-export function NewsFilter ({fetchFunc}: NewsFilterProps) {
+function renderYearButton(itemValue: number, label: string, fetchFunc: (year: number, pageNumber: number) => void) {
+    return (
+        <button onClick={_ => fetchFunc(itemValue, 0)} className={"dropdown-item " + styles.dropdown_item}>{label}</button>
+    )
+}
+
+export function NewsFilter ({filterName, fetchFunc, filterItems}: NewsFilterProps) {
     return (
         <div className="dropdown dropright">
             <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Фильтр по годам
+                {filterName}
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button onClick={_ => fetchFunc(0, 0)} className={"dropdown-item " + styles.dropdown_item}>Все года</button>
-                <button onClick={_ => fetchFunc(2020, 0)} className={"dropdown-item " + styles.dropdown_item}>2020</button>
-                <button onClick={_ => fetchFunc(2019, 0)} className={"dropdown-item " + styles.dropdown_item}>2019</button>
-                <button onClick={_ => fetchFunc(2018, 0)} className={"dropdown-item " + styles.dropdown_item}>2018</button>
-                <button onClick={_ => fetchFunc(2017, 0)} className={"dropdown-item " + styles.dropdown_item}>2017</button>
-                <button onClick={_ => fetchFunc(2016, 0)} className={"dropdown-item " + styles.dropdown_item}>2016</button>
-                <button onClick={_ => fetchFunc(2015, 0)} className={"dropdown-item " + styles.dropdown_item}>2015</button>
-                <button onClick={_ => fetchFunc(2014, 0)} className={"dropdown-item " + styles.dropdown_item}>2014</button>
-                <button onClick={_ => fetchFunc(2013, 0)} className={"dropdown-item " + styles.dropdown_item}>2013</button>
-                <button onClick={_ => fetchFunc(2012, 0)} className={"dropdown-item " + styles.dropdown_item}>2012</button>
-                <button onClick={_ => fetchFunc(2011, 0)} className={"dropdown-item " + styles.dropdown_item}>2011</button>
-                <button onClick={_ => fetchFunc(2010, 0)} className={"dropdown-item " + styles.dropdown_item}>2010</button>
+                {filterItems.map(filterItem => renderYearButton(filterItem.itemValue, filterItem.label, fetchFunc))}
             </div>
         </div>
     )

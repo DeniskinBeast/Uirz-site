@@ -7,7 +7,10 @@ import {ConstituentDocs} from "../Models/ConstituentDocs";
 import {CorruptionDocs} from "../Models/CorruptionDocs";
 import {LegislationStatusReports} from "../Models/LegislationStatusReports";
 import {Publications} from "../Models/Publications";
+import {LegislationReviews} from "../Models/LegislationReviews";
+import {FederalLegislationMonitoring} from "../Models/FederalLegislationMonitoring";
 
 export function initializeModels(database: Sequelize): void {
-    database.addModels([Structure, InstNews, LawNews, ConstituentDocs, CorruptionDocs, LegislationStatusReports, Publications])
+    database.addModels([Structure, InstNews, LawNews, ConstituentDocs, CorruptionDocs, LegislationStatusReports,
+        Publications, LegislationReviews, FederalLegislationMonitoring])
 }

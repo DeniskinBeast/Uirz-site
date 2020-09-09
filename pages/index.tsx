@@ -54,9 +54,8 @@ export default class MainPage extends Component<MainPageState> {
                     <MainPageSubNav/>
                     <div className="container">
                         <UpButton to="generalInformation"/>
-                        <div>
                             <h1 id="generalInformation" className="text-center page__title">Общие сведения о деятельности Института</h1>
-                            <p className="text">Государственное учреждение Свердловской области «Уральский институт регионального
+                            <p>Государственное учреждение Свердловской области «Уральский институт регионального
                                 законодательства» было учреждено Указом Губернатора Свердловской области от 2 июля 1996
                                 года № 240 «О создании государственного учреждения Свердловской области «Уральский
                                 институт регионального законодательства» и распоряжением председателя Областной Думы
@@ -96,8 +95,7 @@ export default class MainPage extends Component<MainPageState> {
                                 <a> правовая экспертиза </a></Link>проектов нормативных
                                 правовых актов Свердловской области и иных документов.</p>
                             <p>Кроме того, Институт проводит сравнительно-правовой анализ законов субъектов Российской
-                                Федерации, на основе которого готовит <a href="?x=overview"
-                                                                         className="ref">обзоры</a> законодательства
+                                Федерации, на основе которого готовит <Link href="/legislation_reviews" as="/legislation_reviews"><a>обзоры законодательства </a></Link>
                                 Российской Федерации и субъектов Российской Федерации.</p>
                             <p>Также Институт осуществляет правовое консультирование по вопросам, представленным в
                                 обращениях депутатов Законодательного Собрания Свердловской области, высших органов
@@ -132,7 +130,6 @@ export default class MainPage extends Component<MainPageState> {
                                 условий труда, по результатам которой подготовлен и утвержден отчет от 26 сентября 2019
                                 года. <a target="_blank" href="Publ/Svod_vedomost.pdf">(Сводная
                                     ведомость результатов проведения специальной оценки условий труда). </a></p>
-                        </div>
                         <h1 id="instNews" className="text-center page__title">Новости института</h1>
                         <NewsCards newsCards={lastInstNews}/>
                         <div className="btn_container">
@@ -151,9 +148,17 @@ export default class MainPage extends Component<MainPageState> {
                             <div className="container">
                                 <h1 className="text-center page__title">Контакты</h1>
                                 <p className="text-center"><strong>Адрес: </strong>620031, Екатеринбург, пл.Октябрьская, 3</p>
-                                <p className="text-center"><strong>Телефон (факс): </strong>(343) 378-94-36</p>
                                 <p className="text-center"><strong>Почта: </strong>uirz@duma.midural.ru</p>
-                                <p className="text-center"><a href="">Телефоны сотрудников</a></p>
+                                <p className="text-center"><strong>Приемная директора: </strong>(343) 378-94-36</p>
+                                <p className="text-center"><strong>Бухгалтерия: </strong>(343) 362-15-39</p>
+                                <p className="text-center"><strong>Отдел разработки проектов нормативных правовых актов: </strong>(343) 378-93-25</p>
+                                <p className="text-center"><strong>Отдел систематизации законодательства и справочно-информационной работы: </strong>(343) 362-15-86</p>
+                                <p className="text-center"><strong>Организационно-правовой отдел: </strong>(343) 371-75-03</p>
+                                <p className="text-center">
+                                    <Link href="/structure" as="/structure">
+                                        <a href="">Контакты сотрудников</a>
+                                    </Link>
+                                </p>
                                 <h2 id="locationMap" className="text-center page__title">Схема проезда</h2>
                                 <p className="text-center"><strong>Остановка транспорта:</strong> Драмтеатр</p>
                                 <p className="text-center"><img src="/marshrut.gif" alt="Общественный транспорт"></img></p>

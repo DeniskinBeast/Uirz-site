@@ -1,73 +1,115 @@
-import React from "react";
+import React, {Component} from "react";
 
 import {Layout} from "../Components/Layout";
 import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
+import {DocsCardData} from "../Types/DocsCardData";
+import {DocsCards} from "../Components/DocsCards/DocsCards";
+import {NewsFilter} from "../Components/NewsFIlter/NewsFilter";
+import {LoadingComponent} from "../Components/Loading";
+import {UpdateComponent} from "../Components/UpdateComponent";
+import {scroll} from "../Scripts/scroll";
+import ReactPaginate from "react-paginate";
 
-export default function LegislationReviewsPage() {
-    return (
-        <>
-            <Layout title="Тематические обзоры законодательства"/>
-            <Navbar/>
-            <div className="content">
-                <Header/>
-                <div className="container">
-                    <h1 className="text-center page__title">Тематические обзоры законодательства</h1>
-                    <h2 className="text-center page__title">2009 Год</h2>
-                    <ul>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor2.html" target="_blank">Обзор законодательства Российской Федерации и законодательства субъектов Российской Федерации о государственной поддержке молодежи и молодежных организаций</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor3.html" target="_blank">Обзор законодательства субъектов Российской Федерации о законодательных (представительных) органах государственной власти субъектов Российской Федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor4.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации по предоставлению земельных участков, находящихся в государственной или муниципальной собственности, в собственность граждан и юридических лиц бесплатно</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor5.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации о государственной поддержке семьи</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor6.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации о порядке и условиях предоставления государственных гарантий субъектов Российской Федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor1.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации о полномочиях органов государственного финансового контроля, созданных законодательными (представительными) органами государственной власти субъектов Российской Федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor7.html" target="_blank">Обзор законодательства субъектов Российской Федерации о научно-технической деятельности</a>
-                        </li>
-                    </ul>
-                    <h2 className="text-center page__title">2010 Год</h2>
-                    <ul>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor8.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации о статусе административных центров (столиц) субъектов российской федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor9.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации в сфере государственных внутренних заимствований субъектов Российской Федерации путем выпуска государственных ценных бумаг от имени субъекта Российской Федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor10.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации, регулирующего предоставление мер государственной поддержки в сфере кинематографии</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor11.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации, по вопросам обеспечения жилой площадью детей-сирот и детей, оставшихся без попечения родителей, а также лиц из числа детей-сирот и детей, оставшихся без попечения родителей</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor12.html" target="_blank">Обзор законодательства субъектов Российской Федерации о порядке оформления, вступления в силу (введения в действие) конституций (уставов) субъектов Российской Федерации, внесения изменений в конституции (уставы) субъектов Российской Федерации</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor13.html" target="_blank">Обзор законодательства субъектов Российской Федерации в сфере установления налоговых ставок налога на прибыль организаций, подлежащего зачислению в бюджеты субъектов Российской Федерации, а также налоговых ставок и льгот по налогу на имущество организаций</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor14.html" target="_blank">Обзор законодательства Российской Федерации и законодательства субъектов Российской Федерации в сфере предоставления субъектами Российской Федерации юридическим и физическим лицам мер государственной поддержки, направленных на привлечение инвестиций</a>
-                        </li>
-                        <li>
-                            <a href="/docs/legislation_reviews/obzor15.html" target="_blank">Обзор законодательства Российской Федерации и субъектов Российской Федерации по вопросу о предоставлении государственной поддержки юридическим и физическим лицам, осуществляющим производство сельскохозяйственной продукции</a>
-                        </li>
-                    </ul>
+interface LegislationReviewsPageState {
+    reviews: DocsCardData[],
+    page: number,
+    isUpdating: boolean,
+    filteredYear: number,
+    reviewsCount: number
+}
+
+export default class LegislationReviewsPage extends Component<LegislationReviewsPageState>  {
+    state: LegislationReviewsPageState = {
+        reviews: [],
+        page: 0,
+        isUpdating: false,
+        filteredYear: 0,
+        reviewsCount: 0
+    };
+
+    fetchReviewsPage = (pageNumber: number): void => {
+        fetch(`/api/v1/legislationReviews/${pageNumber}`)
+            .then(response => response.json())
+            .then(reviews => this.setState({reviews, isUpdating: false, filteredYear: 0, page: pageNumber}))
+    };
+
+    fetchReviewsCount = (): void => {
+        fetch("/api/v1/legislationReviewsCount")
+            .then(response => response.json())
+            .then(reviewsCount => this.setState({reviewsCount}));
+    };
+
+    fetchReviewsByYear = (year: number, pageNumber: number): void => {
+        fetch(`/api/v1/legislationReviewsByYear/${year}/${pageNumber}`)
+            .then(response => response.json())
+            .then(reviews => this.setState({reviews, isUpdating: false, filteredYear: year, page: pageNumber}))
+    };
+
+    fetchReviewsCountByYear = (year: number): void => {
+        fetch(`/api/v1/legislationReviewsCountByYear/${year}`)
+            .then(response => response.json())
+            .then(reviewsCount => this.setState({reviewsCount}));
+    };
+
+
+    filterByYear = (year: number, pageNumber: number): void => {
+        this.setState({isUpdating: true});
+        if (year == 0)
+        {
+            this.fetchReviewsCount();
+            this.fetchReviewsPage(pageNumber);
+        }
+        else {
+            this.fetchReviewsCountByYear(year);
+            this.fetchReviewsByYear(year, pageNumber);
+        }
+    };
+
+    componentDidMount(): void {
+        this.fetchReviewsCount();
+        this.fetchReviewsPage(this.state.page);
+    }
+
+    render(): React.ReactElement {
+        const {reviews, reviewsCount, isUpdating, filteredYear, page} = this.state;
+        const reviewsPerPage = 6;
+        const pagesCount = Math.ceil(reviewsCount / reviewsPerPage);
+        const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2010, label: "2010"}, {itemValue: 2009, label: "2009"}];
+
+        return (
+            <>
+                <Layout title="Тематические обзоры законодательства"/>
+                <Navbar/>
+                <div className="content">
+                    <Header/>
+                    <h1 id="legislation_reviews" className="text-center page__title">Тематические обзоры законодательства</h1>
+                    <div className="container">
+                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                        {reviews.length == 0 && <LoadingComponent/>}
+                        {isUpdating && <UpdateComponent/>}
+                        <DocsCards docsCards={reviews}/>
+                        <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
+                                       containerClassName={"pagination justify-content-center"}
+                                       pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}
+                                       previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
+                                       breakClassName={"page-item"} breakLinkClassName={"page-link"}
+                                       previousLabel={"Назад"} nextLabel={"Вперед"}
+                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       forcePage={page}
+                                       onPageChange={selectedItem => {
+                                           this.setState({isUpdating: true});
+                                           if (filteredYear !== 0)
+                                               this.fetchReviewsByYear(filteredYear, selectedItem.selected);
+                                           else
+                                               this.fetchReviewsPage(selectedItem.selected);
+                                           scroll("legislation_reviews");
+                                       }}/>
+                    </div>
                 </div>
-            </div>
-            <Footer/>
-        </>
-    )
+                <Footer/>
+            </>
+        )
+    }
 }

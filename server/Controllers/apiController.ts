@@ -8,6 +8,8 @@ import {CorruptionDocs} from "../Models/CorruptionDocs";
 import {LegislationStatusReports} from "../Models/LegislationStatusReports";
 import {Publications} from "../Models/Publications";
 import {Op} from "sequelize";
+import {LegislationReviews} from "../Models/LegislationReviews";
+import {FederalLegislationMonitoring} from "../Models/FederalLegislationMonitoring";
 
 // @ts-ignore
 export async function structurePage(req: Request, res: Response) {
@@ -216,4 +218,93 @@ export async function publicationsPage(req: Request, res: Response) {
         });
 
     res.send(JSON.stringify(publications));
+}
+
+export async function legislationReviewsPage(req: Request, res: Response) {
+    const offset = 6;
+
+    const reviews = await LegislationReviews.findAll({
+        order: [
+            ["year", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(reviews));
+}
+
+// @ts-ignore
+export async function legislationReviewsPageReviewsCount(req: Request, res: Response) {
+    const reviewsCount = await LegislationReviews.count();
+
+    res.send(JSON.stringify(reviewsCount));
+}
+
+export async function legislationReviewsPageByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+    const offset = 6;
+
+    const reviews = await LegislationReviews.findAll({
+        where: {
+            year: year
+        },
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(reviews));
+}
+
+export async function legislationReviewsPageCountByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const reviewsCount = await LegislationReviews.count({
+        where: {
+            year: year
+        }
+    });
+
+    res.send(JSON.stringify(reviewsCount));
+}
+
+// @ts-ignore
+export async function federalLegislationMonitoringPageLast(req: Request, res: Response) {
+    const report = await FederalLegislationMonitoring.findOne({
+        order: [
+            ["year", "DESC"],
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function federalLegislationMonitoringPageByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await FederalLegislationMonitoring.findOne({
+        where: {
+            year: year
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function federalLegislationMonitoringPageByMonth(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+    const month = req.params.month;
+
+    const report = await FederalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            month: month
+        }
+    });
+
+    res.send(JSON.stringify(report));
 }
