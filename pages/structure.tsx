@@ -8,7 +8,7 @@ import {Layout} from "../Components/Layout";
 import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {Footer} from "../Components/Footer";
-import {DepartmentsNav} from "../Components/DepartmentsNav/DepartmentsNav";
+import {SubNav} from "../Components/SubNav/SubNav";
 import {UpButton} from "../Components/UpButton/UpButton";
 import {LoadingComponent} from "../Components/Loading";
 
@@ -60,13 +60,18 @@ export default class StructurePage extends Component<StructurePageState> {
 
     render(): React.ReactElement {
         const {unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards} = this.state;
+        const subNavItems = [{label: "Неназванный отдел", scrollTo: "sector_1"}, {label: "Экспертный совет", scrollTo: "sector_2"},
+            {label: "Отдел разработки нормативных правовых актов", scrollTo: "sector_3"},
+            {label: "Отдел систематизации законодательства и справочно-информационной работы", scrollTo: "sector_5"},
+            {label: "Организационно-правовой отдел", scrollTo: "sector_6"}];
+
         return (
             <>
                 <Layout title="Структура института"/>
                 <Navbar/>
                 <div className="content">
                     <Header/>
-                    <DepartmentsNav/>
+                    <SubNav subNavId="structurePageSubNav" subNavItems={subNavItems}/>
                     <UpButton to="sector_1"/>
                     <div className="container">
                         {unnamedCards.length == 0 || unnamed2Cards.length == 0 && <LoadingComponent/>}

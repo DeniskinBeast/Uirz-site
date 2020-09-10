@@ -6,12 +6,12 @@ import {Navbar} from "../Components/Navbar/Navbar";
 import {Footer} from "../Components/Footer";
 import {NewsCards} from "../Components/NewsCards/NewsCards";
 import {YaMap} from "../Components/Map/Map";
-import {MainPageSubNav} from "../Components/MainPageSubNav/MainPageSubNav";
 import {buttonUp} from "../Scripts/buttonUp";
 
 import {NewsCardData} from "../Types/NewsCardData";
 import Link from "next/link";
 import {UpButton} from "../Components/UpButton/UpButton";
+import {SubNav} from "../Components/SubNav/SubNav";
 
 interface MainPageState {
     lastInstNews: NewsCardData[],
@@ -44,6 +44,9 @@ export default class MainPage extends Component<MainPageState> {
 
     render(): React.ReactElement {
         const {lastInstNews, lastLawNews} = this.state;
+        const subNavItems = [{label: "Общие сведения", scrollTo: "generalInformation"}, {label: "Новости института", scrollTo: "instNews"},
+            {label: "Новости законодательства", scrollTo: "lawNews"}, {label: "Контакты", scrollTo: "contacts"},
+            {label: "Схема проезда", scrollTo: "locationMap"}, {label: "Сайты высших органов гос. власти", scrollTo: "sitesLinks"}];
 
         return (
             <>
@@ -51,7 +54,7 @@ export default class MainPage extends Component<MainPageState> {
                 <Navbar/>
                 <div className="content">
                     <Header/>
-                    <MainPageSubNav/>
+                    <SubNav subNavId="mainPageSubNav" subNavItems={subNavItems}/>
                     <div className="container">
                         <UpButton to="generalInformation"/>
                             <h1 id="generalInformation" className="text-center page__title">Общие сведения о деятельности Института</h1>

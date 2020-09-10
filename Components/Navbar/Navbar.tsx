@@ -60,7 +60,9 @@ export function Navbar() {
                         <Link href="/federal_legislation_monitoring" as="/federal_legislation_monitoring">
                             <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Федерального законодательства</a>
                         </Link>
-                        <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Региональгого законодательства</a>
+                        <Link href="/regional_legislation_monitoring/[main]">
+                            <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Региональгого законодательства</a>
+                        </Link>
                         <Link href="/corruption_countering" as="corruption_countering">
                             <a className={"dropdown-item " + styles.dropdown_item} href="">Противодействие коррупции</a>
                         </Link>

@@ -16,7 +16,7 @@ function renderYearButton(itemValue: number, label: string, fetchFunc: (year: nu
 
 export function NewsFilter ({filterName, fetchFunc, filterItems}: NewsFilterProps) {
     return (
-        <div className="dropdown dropright">
+        <div className="dropdown dropright filter">
             <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {filterName}
