@@ -4,7 +4,6 @@ import {Link as ScrollLink} from "react-scroll";
 
 import styles from "./navbar.module.css";
 
-//TODO не забыть убрать лишнее из стилей и убрать контакты из раздела "Об институтте"
 export function Navbar() {
     return (
     <nav className={"navbar navbar-expand-lg fixed-top " + styles.navbar}>
@@ -60,7 +59,7 @@ export function Navbar() {
                         <Link href="/federal_legislation_monitoring" as="/federal_legislation_monitoring">
                             <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Федерального законодательства</a>
                         </Link>
-                        <Link href="/regional_legislation_monitoring/[main]">
+                        <Link href="/regional_legislation_monitoring/main">
                             <a className={"dropdown-item " + styles.dropdown_item} href="">Мониторинг Региональгого законодательства</a>
                         </Link>
                         <Link href="/corruption_countering" as="corruption_countering">

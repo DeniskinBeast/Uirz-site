@@ -60,11 +60,11 @@ export default class GovernmentDecreesMonitoringPage extends Component<Governmen
 
     render(): React.ReactElement {
         const {report, filteredYear, filteredMonth, isUpdating} = this.state;
-        const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/[main]", as: "/regional_legislation_monitoring/main"},
-            {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/[regional_law]", as: "/regional_legislation_monitoring/regional_law"},
-            {label: "Указы губернатора", href: "/regional_legislation_monitoring/[governor_decrees]", as: "/regional_legislation_monitoring/governor_decrees"},
-            {label: "Постановления правительства Свердловской области", href: "/regional_legislation_monitoring/[government_decrees]", as: "/regional_legislation_monitoring/[government_decrees]"},
-            {label: "Нормативно-правовые акты исполнительных органов Свердловской области", href: "/regional_legislation_monitoring/[general_documents]", as: "/regional_legislation_monitoring/general_documents"}];
+        const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/main", as: "/regional_legislation_monitoring/main"},
+            {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/regional_law", as: "/regional_legislation_monitoring/regional_law"},
+            {label: "Указы губернатора", href: "/regional_legislation_monitoring/governor_decrees", as: "/regional_legislation_monitoring/governor_decrees"},
+            {label: "Постановления правительства Свердловской области", href: "/regional_legislation_monitoring/government_decrees", as: "/regional_legislation_monitoring/government_decrees"},
+            {label: "Нормативно-правовые акты исполнительных органов Свердловской области", href: "/regional_legislation_monitoring/general_documents", as: "/regional_legislation_monitoring/general_documents"}];
 
         const monthsFilterItems = [{itemValue: 1, label: "Январь"}, {itemValue: 2, label: "Ферваль"},
             {itemValue: 3, label: "Март"}, {itemValue: 4, label: "Апрель"},

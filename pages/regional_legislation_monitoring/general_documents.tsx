@@ -46,11 +46,11 @@ export default class GeneralDocumentsMonitoringPage extends Component<GeneralDoc
 
     render(): React.ReactElement {
         const {report, filteredYear, isUpdating} = this.state;
-        const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/[main]", as: "/regional_legislation_monitoring/main"},
-            {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/[regional_law]", as: "/regional_legislation_monitoring/regional_law"},
-            {label: "Указы губернатора", href: "/regional_legislation_monitoring/[governor_decrees]", as: "/regional_legislation_monitoring/governor_decrees"},
-            {label: "Постановления правительства Свердловской области", href: "/regional_legislation_monitoring/[government_decrees]", as: "/regional_legislation_monitoring/[government_decrees]"},
-            {label: "Нормативно-правовые акты исполнительных органов Свердловской области", href: "/regional_legislation_monitoring/[general_documents]", as: "/regional_legislation_monitoring/general_documents"}];
+        const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/main", as: "/regional_legislation_monitoring/main"},
+            {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/regional_law", as: "/regional_legislation_monitoring/regional_law"},
+            {label: "Указы губернатора", href: "/regional_legislation_monitoring/governor_decrees", as: "/regional_legislation_monitoring/governor_decrees"},
+            {label: "Постановления правительства Свердловской области", href: "/regional_legislation_monitoring/government_decrees", as: "/regional_legislation_monitoring/government_decrees"},
+            {label: "Нормативно-правовые акты исполнительных органов Свердловской области", href: "/regional_legislation_monitoring/general_documents", as: "/regional_legislation_monitoring/general_documents"}];
 
         const yearsFilterItems = [{itemValue: 2010, label: "2010"}, {itemValue: 2009, label: "2009"}];
 
