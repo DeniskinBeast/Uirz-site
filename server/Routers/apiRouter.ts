@@ -4,6 +4,16 @@ import {
     constituentDocsPage,
     corruptionCounteringPageLocalActs,
     corruptionCounteringPageReports,
+    expertCouncilPageProfiles,
+    expertsCouncilPageLastMeetings,
+    expertsCouncilPageLastWorkingGroups,
+    expertsCouncilPastMeetingsPage,
+    expertsCouncilPastMeetingsPageByYear,
+    expertsCouncilPastMeetingsPageCount,
+    expertsCouncilPastMeetingsPageCountByYear,
+    expertsCouncilWorkingGroupPage,
+    expertsCouncilWorkingGroupPageByYear, expertsCouncilWorkingGroupPageByYearCount,
+    expertsCouncilWorkingGroupPageCount,
     federalLegislationMonitoringPageByMonth,
     federalLegislationMonitoringPageByYear,
     federalLegislationMonitoringPageLast,
@@ -73,3 +83,25 @@ apiRouter.get("/federalMonitoringLastReport", federalLegislationMonitoringPageLa
 apiRouter.get("/federalMonitoringReportByYear/:year", federalLegislationMonitoringPageByYear);
 
 apiRouter.get("/federalMonitoringReportByMonth/:year/:month", federalLegislationMonitoringPageByMonth);
+
+apiRouter.get("/expertsCouncilProfiles", expertCouncilPageProfiles);
+
+apiRouter.get("/expertsCouncilLastMeetings", expertsCouncilPageLastMeetings);
+
+apiRouter.get("/expertsCouncilPastMeetings/:pageNumber", expertsCouncilPastMeetingsPage);
+
+apiRouter.get("/expertsCouncilPastMeetingsCount", expertsCouncilPastMeetingsPageCount);
+
+apiRouter.get("/expertsCouncilPastMeetingsByYear/:year/:pageNumber", expertsCouncilPastMeetingsPageByYear);
+
+apiRouter.get("/expertsCouncilPastMeetingsCountByYear/:year", expertsCouncilPastMeetingsPageCountByYear);
+
+apiRouter.get("/expertsCouncilLastWorkingGroups", expertsCouncilPageLastWorkingGroups);
+
+apiRouter.get("/expertsCouncilWorkingGroup/:pageNumber", expertsCouncilWorkingGroupPage);
+
+apiRouter.get("/expertsCouncilWorkingGroupCount", expertsCouncilWorkingGroupPageCount);
+
+apiRouter.get("/expertsCouncilWorkingGroupByYear/:year/:pageNumber", expertsCouncilWorkingGroupPageByYear);
+
+apiRouter.get("/expertsCouncilWorkingGroupCountByYear/:year", expertsCouncilWorkingGroupPageByYearCount);

@@ -3,7 +3,7 @@ body {
     font-family: "Times New Roman", Times, serif;
 }
 
-.container>p {
+.container > p {
     font-size: 20px;
 }
 
@@ -35,17 +35,6 @@ body {
 .uninews_link:hover {
     color: #fff;
     text-decoration: none;
-}
-
-.banner__container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.banner {
-    margin-bottom: 10px;
 }
 
 .pagination {

@@ -18,6 +18,12 @@
     border-radius: 0.3rem;
 }
 
+@media screen and (max-width: 500px) {
+    .img {
+        max-height: 200px;
+    }
+}
+
 .header__subtitle {
     text-align: center;
 }

@@ -14,49 +14,49 @@ import {LoadingComponent} from "../../Components/Loading";
 import {UpdateComponent} from "../../Components/UpdateComponent";
 import {NewsFilter} from "../../Components/NewsFIlter/NewsFilter";
 
-interface UniNewsPageState {
-    uniNews: NewsCardData[],
+interface ExpertsCouncilWorkingGroupPageState {
+    meetings: NewsCardData[],
     page: number,
     isUpdating: boolean,
     filteredYear: number,
     newsCount: number;
 }
 
-export default class UniNewsPage extends Component<UniNewsPageState> {
+export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCouncilWorkingGroupPageState> {
     // static getInitialProps(context: NextPageContext) {
     //     // @ts-ignore
     //     const page: string = context.query.uniNewsPage.toString();
     //     return {page: parseInt(page)};
     // }
 
-    state: UniNewsPageState = {
-        uniNews: [],
+    state: ExpertsCouncilWorkingGroupPageState = {
+        meetings: [],
         page: 0,
         isUpdating: false,
         filteredYear: 0,
         newsCount: 0
     };
 
-    fetchUniNewsPage = (pageNumber: number): void => {
-        fetch(`/api/v1/uniNews/${pageNumber}`)
+    fetchWorkingGroupPage = (pageNumber: number): void => {
+        fetch(`/api/v1/expertsCouncilWorkingGroup/${pageNumber}`)
             .then(response => response.json())
-            .then(uniNews => this.setState({uniNews, isUpdating: false, filteredYear: 0, page: pageNumber}))
+            .then(meetings => this.setState({meetings, isUpdating: false, filteredYear: 0, page: pageNumber}))
     };
 
-    fetchUniNewsPageCount = (): void => {
-        fetch("/api/v1/uniNewsCount")
+    fetchWorkingGroupPageCount = (): void => {
+        fetch("/api/v1/expertsCouncilWorkingGroupCount")
             .then(response => response.json())
             .then(newsCount => this.setState({newsCount}))
     };
 
-    fetchUniNewsByYear = (year: number, pageNumber: number): void => {
-        fetch(`/api/v1/uniNewsByYear/${year}/${pageNumber}`)
+    fetchWorkingGroupByYear = (year: number, pageNumber: number): void => {
+        fetch(`/api/v1/expertsCouncilWorkingGroupByYear/${year}/${pageNumber}`)
             .then(response => response.json())
-            .then(uniNews => this.setState({uniNews, isUpdating: false, filteredYear: year, page: pageNumber}))
+            .then(meetings => this.setState({meetings, isUpdating: false, filteredYear: year, page: pageNumber}))
     };
 
-    fetchUniNewsCountByYear = (year: number): void => {
-        fetch(`/api/v1/uniNewsCountByYear/${year}`)
+    fetchWorkingGroupCountByYear = (year: number): void => {
+        fetch(`/api/v1/expertsCouncilWorkingGroupCountByYear/${year}`)
             .then(response => response.json())
             .then(newsCount => this.setState({newsCount}))
     };
@@ -65,41 +65,38 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
         this.setState({isUpdating: true});
         if (year === 0)
         {
-            this.fetchUniNewsPageCount();
-            this.fetchUniNewsPage(pageNumber);
+            this.fetchWorkingGroupPageCount();
+            this.fetchWorkingGroupPage(pageNumber);
         }
         else {
-            this.fetchUniNewsCountByYear(year);
-            this.fetchUniNewsByYear(year, pageNumber);
+            this.fetchWorkingGroupCountByYear(year);
+            this.fetchWorkingGroupByYear(year, pageNumber);
         }
     };
 
     componentDidMount(): void {
-        this.fetchUniNewsPageCount();
-        this.fetchUniNewsPage(this.state.page);
+        this.fetchWorkingGroupPageCount();
+        this.fetchWorkingGroupPage(0);
     };
 
     render(): React.ReactElement {
-        const {uniNews, newsCount, isUpdating, filteredYear, page} = this.state;
+        const {meetings, newsCount, isUpdating, filteredYear, page} = this.state;
         const newsPerPage = 6;
         const pagesCount = Math.ceil(newsCount / newsPerPage);
-        const filterItems = [{itemValue: 2020, label: "2020"}, {itemValue: 2019, label: "2019"},
-            {itemValue: 2018, label: "2018"}, {itemValue: 2017, label: "2017"}, {itemValue: 2016, label: "2016"},
-            {itemValue: 2015, label: "2015"}, {itemValue: 2014, label: "2014"}, {itemValue: 2013, label: "2013"},
-            {itemValue: 2012, label: "2012"}, {itemValue: 2011, label: "2011"}, {itemValue: 2010, label: "2010"}];
+        const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2020, label: "2020"}];
 
         return (
             <>
-                <Layout title="Новости института"/>
+                <Layout title="Повестки прошедших рабочих групп"/>
                 <Navbar/>
                 <div className="content">
                     <Header/>
-                    <h1 id="instNews" className="text-center page__title">Новости института</h1>
+                    <h1 id="working_group" className="text-center page__title">Повестки прошедших рабочих групп</h1>
                     <div className="container">
                         <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
-                        {uniNews.length == 0 && <LoadingComponent/>}
+                        {meetings.length == 0 && <LoadingComponent/>}
                         {isUpdating && <UpdateComponent/>}
-                        <NewsCards newsCards={uniNews} cardsType="inst_news"/>
+                        <NewsCards newsCards={meetings} cardsType="working_group"/>
                         <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
                                        containerClassName={"pagination justify-content-center"}
                                        pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}
@@ -111,10 +108,10 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
                                            if (filteredYear !== 0)
-                                               this.fetchUniNewsByYear(filteredYear, selectedItem.selected);
+                                               this.fetchWorkingGroupByYear(filteredYear, selectedItem.selected);
                                            else
-                                               this.fetchUniNewsPage(selectedItem.selected);
-                                           scroll("instNews");
+                                               this.fetchWorkingGroupPage(selectedItem.selected);
+                                           scroll("working_group");
                                        }}/>
                     </div>
                 </div>

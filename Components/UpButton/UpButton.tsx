@@ -9,6 +9,6 @@ interface UpButtonProps {
 
 export function UpButton({to}: UpButtonProps) {
     return (
-        <ScrollLink href="" id="upbutton" className={"btn " + styles.btn_up} to={to} activeClass="active" smooth={true} offset={-50}>&#129045;</ScrollLink>
+        <ScrollLink href="" id="upbutton" className={"btn " + styles.btn_up} to={to} activeClass="active" smooth={true} offset={-50}>&uarr;</ScrollLink>
     )
 }

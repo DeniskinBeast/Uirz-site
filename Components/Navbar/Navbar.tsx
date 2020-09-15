@@ -88,7 +88,9 @@ export function Navbar() {
                     </div>
                 </li>
                 <li className="nav-item">
-                    <button className={"nav-btn btn " + styles.nav_btn}>Экспертный совет</button>
+                    <Link href="/experts_council/main" as="/experts_council/main">
+                        <a className={"nav-btn btn " + styles.nav_btn}>Экспертный совет</a>
+                    </Link>
                 </li>
                 <li className="nav-item">
                     <a className={"nav-btn btn " + styles.nav_btn} href="http://sovet-m.uirz.ru/" target="_blank">Совет по мониторингу</a>

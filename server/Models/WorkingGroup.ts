@@ -1,8 +1,8 @@
 import {AllowNull, AutoIncrement, Column, DataType, Length, Model, PrimaryKey, Table} from "sequelize-typescript";
 
 
-@Table({tableName: "newsinst"})
-export class InstNews extends Model<InstNews> {
+@Table({tableName: "workinggroup"})
+export class WorkingGroup extends Model<WorkingGroup> {
     @PrimaryKey
     @AutoIncrement
     @Column(DataType.INTEGER)
@@ -29,18 +29,4 @@ export class InstNews extends Model<InstNews> {
     @Length({max: 150})
     @Column(DataType.STRING)
     name: string;
-
-    @AllowNull(false)
-    @Length({max: 100})
-    @Column(DataType.STRING)
-    big_pic: string;
-
-    @AllowNull(false)
-    @Length({max: 100})
-    @Column(DataType.STRING)
-    sign: string;
-
-    @AllowNull(true)
-    @Column(DataType.INTEGER)
-    nesovet: number;
 }

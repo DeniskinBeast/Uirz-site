@@ -10,6 +10,7 @@ import {Publications} from "../Models/Publications";
 import {Op} from "sequelize";
 import {LegislationReviews} from "../Models/LegislationReviews";
 import {FederalLegislationMonitoring} from "../Models/FederalLegislationMonitoring";
+import {WorkingGroup} from "../Models/WorkingGroup";
 
 // @ts-ignore
 export async function structurePage(req: Request, res: Response) {
@@ -307,4 +308,178 @@ export async function federalLegislationMonitoringPageByMonth(req: Request, res:
     });
 
     res.send(JSON.stringify(report));
+}
+
+// @ts-ignore
+export async function expertCouncilPageProfiles(req: Request, res: Response) {
+    const profileCards = await Structure.findAll({
+        attributes: ["id", "sector", "full_name", "full_midname", "full_surname", "position", "pic", "bio", "phone", "email", "office", "degree", "npp"],
+        where: {
+            sector: 2
+        }
+    });
+
+    res.send(JSON.stringify(profileCards));
+}
+
+// @ts-ignore
+export async function expertsCouncilPageLastMeetings(req: Request, res: Response) {
+    const lastMeetings = await InstNews.findAll({
+        attributes: ["id", "pic", "text", "anons", "name", "date"],
+        where: {
+            [Op.or]: [
+                {nesovet: 0},
+                {nesovet: null}
+            ]
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 3
+    });
+
+    res.send(JSON.stringify(lastMeetings));
+}
+
+export async function expertsCouncilPastMeetingsPage(req: Request, res: Response) {
+    const offset = 6;
+
+    const instNews = await InstNews.findAll({
+        attributes: ["id", "pic", "text", "anons", "name", "date"],
+        where: {
+            [Op.or]: [
+                {nesovet: 0},
+                {nesovet: null}
+            ]
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(instNews));
+}
+
+// @ts-ignore
+export async function expertsCouncilPastMeetingsPageCount(req: Request, res: Response) {
+    const newsCount = await InstNews.count({
+        where: {
+            [Op.or]: [
+                {nesovet: 0},
+                {nesovet: null}
+            ]
+        }
+    });
+
+    res.send(JSON.stringify(newsCount));
+}
+
+export async function expertsCouncilPastMeetingsPageByYear(req: Request, res: Response) {
+    const year = req.params.year;
+    const offset = 6;
+    const instNewsByYear = await InstNews.findAll({
+        attributes: ["id", "pic", "text", "anons", "name", "date"],
+        where: {
+            [Op.or]: [
+                {nesovet: 0},
+                {nesovet: null}
+            ],
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(instNewsByYear));
+}
+
+export async function expertsCouncilPastMeetingsPageCountByYear(req: Request, res: Response) {
+    const year = req.params.year;
+
+    const newsCount = await InstNews.count({
+        where: {
+            [Op.or]: [
+                {nesovet: 0},
+                {nesovet: null}
+            ],
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        }
+    });
+
+    res.send(JSON.stringify(newsCount));
+}
+
+// @ts-ignore
+export async function expertsCouncilPageLastWorkingGroups(req: Request, res: Response) {
+    const lastGroups = await WorkingGroup.findAll({
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 3
+    });
+
+    res.send(JSON.stringify(lastGroups));
+}
+
+export async function expertsCouncilWorkingGroupPage(req: Request, res: Response) {
+    const offset = 6;
+
+    const news = await WorkingGroup.findAll({
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(news));
+}
+
+// @ts-ignore
+export async function expertsCouncilWorkingGroupPageCount(req: Request, res: Response) {
+    const newsCount = await WorkingGroup.count();
+
+    res.send(JSON.stringify(newsCount));
+}
+
+export async function expertsCouncilWorkingGroupPageByYear(req: Request, res: Response) {
+    const year = req.params.year;
+    const offset = 6;
+    const newsByYear = await WorkingGroup.findAll({
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        },
+        order: [
+            ["date", "DESC"]
+        ],
+        limit: 6,
+        offset: parseInt(req.params.pageNumber) * offset
+    });
+
+    res.send(JSON.stringify(newsByYear));
+}
+
+export async function expertsCouncilWorkingGroupPageByYearCount(req: Request, res: Response) {
+    const year = req.params.year;
+
+    const newsCount = await WorkingGroup.count({
+        where: {
+            date: {
+                [Op.between]: [`${year}-01-01`, `${year}-12-31`]
+            }
+        }
+    });
+
+    res.send(JSON.stringify(newsCount));
 }

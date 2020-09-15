@@ -12,6 +12,8 @@ import {NewsCardData} from "../Types/NewsCardData";
 import Link from "next/link";
 import {UpButton} from "../Components/UpButton/UpButton";
 import {SubNav} from "../Components/SubNav/SubNav";
+import Banners from "../Components/MainPage/Banners/Banners";
+import Contacts from "../Components/MainPage/Contacts/Contacts";
 
 interface MainPageState {
     lastInstNews: NewsCardData[],
@@ -134,52 +136,27 @@ export default class MainPage extends Component<MainPageState> {
                                 года. <a target="_blank" href="Publ/Svod_vedomost.pdf">(Сводная
                                     ведомость результатов проведения специальной оценки условий труда). </a></p>
                         <h1 id="instNews" className="text-center page__title">Новости института</h1>
-                        <NewsCards newsCards={lastInstNews}/>
+                        <NewsCards newsCards={lastInstNews} cardsType="inst_news"/>
                         <div className="btn_container">
                             <Link href="/uniNews/[uniNewsPage]" as="/uniNews/0">
                                 <a className="btn btn-outline-secondary uninews_link">Читать все новости</a>
                             </Link>
                         </div>
                         <h1 id="lawNews" className="text-center page__title">Новости законодательства</h1>
-                        <NewsCards newsCards={lastLawNews}/>
+                        <NewsCards newsCards={lastLawNews} cardsType="law_news"/>
                         <div className="btn_container">
                             <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
                                 <a className="btn btn-outline-secondary uninews_link">Читать все новости</a>
                             </Link>
                         </div>
-                        <div className="contacts" id="contacts">
-                            <div className="container">
-                                <h1 className="text-center page__title">Контакты</h1>
-                                <p className="text-center"><strong>Адрес: </strong>620031, Екатеринбург, пл.Октябрьская, 3</p>
-                                <p className="text-center"><strong>Почта: </strong>uirz@duma.midural.ru</p>
-                                <p className="text-center"><strong>Приемная директора: </strong>(343) 378-94-36</p>
-                                <p className="text-center"><strong>Бухгалтерия: </strong>(343) 362-15-39</p>
-                                <p className="text-center"><strong>Отдел разработки проектов нормативных правовых актов: </strong>(343) 378-93-25</p>
-                                <p className="text-center"><strong>Отдел систематизации законодательства и справочно-информационной работы: </strong>(343) 362-15-86</p>
-                                <p className="text-center"><strong>Организационно-правовой отдел: </strong>(343) 371-75-03</p>
-                                <p className="text-center">
-                                    <Link href="/structure" as="/structure">
-                                        <a href="">Контакты сотрудников</a>
-                                    </Link>
-                                </p>
-                                <h2 id="locationMap" className="text-center page__title">Схема проезда</h2>
-                                <p className="text-center"><strong>Остановка транспорта:</strong> Драмтеатр</p>
-                                <p className="text-center"><img src="/marshrut.gif" alt="Общественный транспорт"></img></p>
-                                <YaMap/>
-                                <h2 id="sitesLinks" className="text-center page__title">Сайты высших органов государственной власти</h2>
-                                <div className="text-center banner__container">
-                                    <div className="banner">
-                                        <a href="http://gubernator96.ru/" target="_blank"><img src="/sites_banners/gubernator-banner.png"/></a>
-                                    </div>
-                                    <div className="banner">
-                                        <a href="http://zsso.ru/" target="_blank"><img src="/sites_banners/logo_zsso.jpg"/></a>
-                                    </div>
-                                    <div className="banner">
-                                        <a href="http://midural.ru/" target="_blank"><img src="/sites_banners/pravit.gif"/></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h1 id="contacts" className="text-center page__title">Контакты</h1>
+                        <Contacts/>
+                        <h2 id="locationMap" className="text-center page__title">Схема проезда</h2>
+                        <p className="text-center"><strong>Остановка транспорта:</strong> Драмтеатр</p>
+                        <p className="text-center"><img src="/marshrut.gif" alt="Общественный транспорт"></img></p>
+                        <YaMap/>
+                        <h2 id="sitesLinks" className="text-center page__title">Сайты высших органов государственной власти</h2>
+                        <Banners/>
                     </div>
                 </div>
                 <Footer/>

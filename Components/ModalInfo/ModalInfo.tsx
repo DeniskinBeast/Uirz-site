@@ -20,7 +20,7 @@ export function ModalInfo({id, title, subtitle, pic, text}: ModalInfoProps) {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h4 className="modal-title" id="modal_info_1_title">{title}</h4>
+                        <h4 className="modal-title" id="modal_info_1_title">{ReactHtmlParser(title)}</h4>
                         <button type="button" className="close" data-dismiss="modal"
                                 aria-label="Close">
                             <span aria-hidden="true">&times;</span>

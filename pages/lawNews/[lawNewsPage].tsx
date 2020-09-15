@@ -99,7 +99,7 @@ export default class LawNewsPage extends Component<LawNewsPageState> {
                         <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                         {lawNews.length == 0 && <LoadingComponent/>}
                         {isUpdating && <UpdateComponent/>}
-                        <NewsCards newsCards={lawNews}/>
+                        <NewsCards newsCards={lawNews} cardsType="law_news"/>
                         <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
                                        containerClassName={"pagination justify-content-center"}
                                        pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}
