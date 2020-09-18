@@ -11,14 +11,18 @@ import {Footer} from "../Components/Footer";
 import {SubNav} from "../Components/SubNav/SubNav";
 import {UpButton} from "../Components/UpButton/UpButton";
 import {LoadingComponent} from "../Components/Loading";
+import {connectionErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface StructurePageState {
-    unnamedCards: ProfileCardData[];
-    expertCards: ProfileCardData[];
-    developCards: ProfileCardData[];
-    systematizationCards: ProfileCardData[];
-    organizationCards: ProfileCardData[];
-    unnamed2Cards: ProfileCardData[];
+    unnamedCards: ProfileCardData[],
+    expertCards: ProfileCardData[],
+    developCards: ProfileCardData[],
+    systematizationCards: ProfileCardData[],
+    organizationCards: ProfileCardData[],
+    unnamed2Cards: ProfileCardData[]
+    error: boolean,
+    errorMessage: string;
 }
 
 export default class StructurePage extends Component<StructurePageState> {
@@ -28,11 +32,14 @@ export default class StructurePage extends Component<StructurePageState> {
         developCards: [],
         systematizationCards: [],
         organizationCards: [],
-        unnamed2Cards: []
+        unnamed2Cards: [],
+        error: false,
+        errorMessage: ""
     };
 
     fetchProfileCards = (): void => {
         fetch(`/api/v1/structure`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
             .then(profileCards => {
                 const unnamedCards = this.divideCards(profileCards, 1);
@@ -42,8 +49,9 @@ export default class StructurePage extends Component<StructurePageState> {
                 const organizationCards = this.divideCards(profileCards, 6);
                 const unnamed2Cards = this.divideCards(profileCards, 7);
 
-                this.setState({unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards})
+                this.setState({unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards, error: false})
             })
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     divideCards = (profileCards: ProfileCardData[], sector: number): ProfileCardData[] => {
@@ -59,11 +67,25 @@ export default class StructurePage extends Component<StructurePageState> {
     }
 
     render(): React.ReactElement {
-        const {unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards} = this.state;
+        const {unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards, error, errorMessage} = this.state;
         const subNavItems = [{label: "Неназванный отдел", scrollTo: "sector_1"}, {label: "Экспертный совет", scrollTo: "sector_2"},
             {label: "Отдел разработки нормативных правовых актов", scrollTo: "sector_3"},
             {label: "Отдел систематизации законодательства и справочно-информационной работы", scrollTo: "sector_5"},
             {label: "Организационно-правовой отдел", scrollTo: "sector_6"}];
+
+        if (error)
+            return (
+                <>
+                    <Layout title="Структура института"/>
+                    <Navbar/>
+                    <div className="content">
+                        <Header/>
+                        <SubNav subNavId="structurePageSubNav" subNavItems={subNavItems}/>
+                        <ErrorComponent errorMessage={errorMessage}/>
+                    </div>
+                    <Footer/>
+                </>
+            );
 
         return (
             <>

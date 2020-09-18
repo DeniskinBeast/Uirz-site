@@ -13,13 +13,17 @@ import {Footer} from "../../Components/Footer";
 import {LoadingComponent} from "../../Components/Loading";
 import {UpdateComponent} from "../../Components/UpdateComponent";
 import {NewsFilter} from "../../Components/NewsFIlter/NewsFilter";
+import {connectionErrorHandler, emptyContentErrorHandler} from "../../server/Handlers/errorHanlders";
+import ErrorComponent from "../../Components/ErrorComponent";
 
 interface ExpertsCouncilWorkingGroupPageState {
     meetings: NewsCardData[],
     page: number,
     isUpdating: boolean,
     filteredYear: number,
-    newsCount: number;
+    newsCount: number,
+    error: boolean,
+    errorMessage: string
 }
 
 export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCouncilWorkingGroupPageState> {
@@ -34,31 +38,42 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
         page: 0,
         isUpdating: false,
         filteredYear: 0,
-        newsCount: 0
+        newsCount: 0,
+        error: false,
+        errorMessage: ""
     };
 
     fetchWorkingGroupPage = (pageNumber: number): void => {
         fetch(`/api/v1/expertsCouncilWorkingGroup/${pageNumber}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(meetings => this.setState({meetings, isUpdating: false, filteredYear: 0, page: pageNumber}))
+            .then(meetings => this.setState({meetings, isUpdating: false, filteredYear: 0, page: pageNumber, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchWorkingGroupPageCount = (): void => {
         fetch("/api/v1/expertsCouncilWorkingGroupCount")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(newsCount => this.setState({newsCount}))
+            .then(newsCount => this.setState({newsCount, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchWorkingGroupByYear = (year: number, pageNumber: number): void => {
         fetch(`/api/v1/expertsCouncilWorkingGroupByYear/${year}/${pageNumber}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(meetings => this.setState({meetings, isUpdating: false, filteredYear: year, page: pageNumber}))
+            .then(emptyContentErrorHandler)
+            .then(meetings => this.setState({meetings, isUpdating: false, page: pageNumber, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchWorkingGroupCountByYear = (year: number): void => {
         fetch(`/api/v1/expertsCouncilWorkingGroupCountByYear/${year}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(newsCount => this.setState({newsCount}))
+            .then(newsCount => this.setState({newsCount, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     filterByYear = (year: number, pageNumber: number): void => {
@@ -69,6 +84,7 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
             this.fetchWorkingGroupPage(pageNumber);
         }
         else {
+            this.setState({filteredYear: year});
             this.fetchWorkingGroupCountByYear(year);
             this.fetchWorkingGroupByYear(year, pageNumber);
         }
@@ -80,10 +96,27 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
     };
 
     render(): React.ReactElement {
-        const {meetings, newsCount, isUpdating, filteredYear, page} = this.state;
+        const {meetings, newsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
         const newsPerPage = 6;
         const pagesCount = Math.ceil(newsCount / newsPerPage);
         const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2020, label: "2020"}];
+
+        if (error)
+            return (
+                <>
+                    <Layout title="Повестки прошедших рабочих групп"/>
+                    <Navbar/>
+                    <div className="content">
+                        <Header/>
+                        <h1 id="working_group" className="text-center page__title">Повестки прошедших рабочих групп</h1>
+                        <div className="container">
+                            <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                            <ErrorComponent errorMessage={errorMessage}/>
+                        </div>
+                    </div>
+                    <Footer/>
+                </>
+            );
 
         return (
             <>

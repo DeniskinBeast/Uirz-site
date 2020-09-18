@@ -14,28 +14,38 @@ import {UpButton} from "../Components/UpButton/UpButton";
 import {SubNav} from "../Components/SubNav/SubNav";
 import Banners from "../Components/MainPage/Banners/Banners";
 import Contacts from "../Components/MainPage/Contacts/Contacts";
+import {connectionErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface MainPageState {
     lastInstNews: NewsCardData[],
-    lastLawNews: NewsCardData[]
+    lastLawNews: NewsCardData[],
+    error: boolean,
+    errorMessage: string
 }
 
 export default class MainPage extends Component<MainPageState> {
     state: MainPageState = {
         lastInstNews: [],
-        lastLawNews: []
+        lastLawNews: [],
+        error: false,
+        errorMessage: ""
     };
 
     fetchLastInstNewsCards = (): void => {
       fetch("api/v1/lastInstNews")
+          .then(connectionErrorHandler)
           .then(response => response.json())
-          .then(lastInstNews => this.setState({lastInstNews: lastInstNews}))
+          .then(lastInstNews => this.setState({lastInstNews: lastInstNews, error: false}))
+          .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchLastLawNewsCards = (): void => {
       fetch("api/v1/lastLawNews")
+          .then(connectionErrorHandler)
           .then(response => response.json())
-          .then(lastLawNews => this.setState({lastLawNews: lastLawNews}))
+          .then(lastLawNews => this.setState({lastLawNews: lastLawNews, error: false}))
+          .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     componentDidMount(): void {
@@ -45,7 +55,7 @@ export default class MainPage extends Component<MainPageState> {
     }
 
     render(): React.ReactElement {
-        const {lastInstNews, lastLawNews} = this.state;
+        const {lastInstNews, lastLawNews, error, errorMessage} = this.state;
         const subNavItems = [{label: "Общие сведения", scrollTo: "generalInformation"}, {label: "Новости института", scrollTo: "instNews"},
             {label: "Новости законодательства", scrollTo: "lawNews"}, {label: "Контакты", scrollTo: "contacts"},
             {label: "Схема проезда", scrollTo: "locationMap"}, {label: "Сайты высших органов гос. власти", scrollTo: "sitesLinks"}];
@@ -136,19 +146,21 @@ export default class MainPage extends Component<MainPageState> {
                                 года. <a target="_blank" href="Publ/Svod_vedomost.pdf">(Сводная
                                     ведомость результатов проведения специальной оценки условий труда). </a></p>
                         <h1 id="instNews" className="text-center page__title">Новости института</h1>
-                        <NewsCards newsCards={lastInstNews} cardsType="inst_news"/>
-                        <div className="btn_container">
+                        {!error && <NewsCards newsCards={lastInstNews} cardsType="inst_news"/>}
+                        {!error && <div className="btn_container">
                             <Link href="/uniNews/[uniNewsPage]" as="/uniNews/0">
                                 <a className="btn btn-outline-secondary uninews_link">Читать все новости</a>
                             </Link>
-                        </div>
+                        </div>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
                         <h1 id="lawNews" className="text-center page__title">Новости законодательства</h1>
-                        <NewsCards newsCards={lastLawNews} cardsType="law_news"/>
-                        <div className="btn_container">
+                        {!error && <NewsCards newsCards={lastLawNews} cardsType="law_news"/>}
+                        {!error && <div className="btn_container">
                             <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
                                 <a className="btn btn-outline-secondary uninews_link">Читать все новости</a>
                             </Link>
-                        </div>
+                        </div>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
                         <h1 id="contacts" className="text-center page__title">Контакты</h1>
                         <Contacts/>
                         <h2 id="locationMap" className="text-center page__title">Схема проезда</h2>

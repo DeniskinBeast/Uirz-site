@@ -10,12 +10,16 @@ import {Footer} from "../Components/Footer";
 import {LoadingComponent} from "../Components/Loading";
 import {UpdateComponent} from "../Components/UpdateComponent";
 import {resolveMonths} from "../Scripts/resovleMonths";
+import {catchHandler, connectionErrorHandler, emptyContentErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface FederalLegislationMonitoringPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
     filteredMonth: number,
-    isUpdating: boolean
+    isUpdating: boolean,
+    error: boolean,
+    errorMessage: string
 }
 
 export default class FederalLegislationMonitoringPage extends Component<FederalLegislationMonitoringPageState> {
@@ -23,34 +27,53 @@ export default class FederalLegislationMonitoringPage extends Component<FederalL
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
         filteredMonth: 0,
-        isUpdating: false
+        isUpdating: false,
+        error: false,
+        errorMessage: ""
     };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/federalMonitoringLastReport")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false}));
+            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false, error: false}))
+            .catch(err => {
+                this.setState({error: true, errorMessage: err.message});
+                catchHandler(err);
+            });
     };
 
     fetchReportByYear = (year: number): void => {
         fetch(`/api/v1/federalMonitoringReportByYear/${year}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false}));
+            .then(emptyContentErrorHandler)
+            .then(report => this.setState({report, filteredMonth: report.month, isUpdating: false, error: false}))
+            .catch(err => {
+                this.setState({error: true, errorMessage: err.message});
+                catchHandler(err);
+            });
     };
 
     fetchReportByMonth = (year: number, month: number): void => {
         fetch(`/api/v1/federalMonitoringReportByMonth/${year}/${month}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredMonth: report.month, isUpdating: false}));
+            .then(emptyContentErrorHandler)
+            .then(report => this.setState({report, isUpdating: false, error: false}))
+            .catch(err => {
+                this.setState({error: true, errorMessage: err.message});
+                catchHandler(err);
+            });
     };
 
     filterByYear = (year: number, _pageNumber: number): void => {
-        this.setState({isUpdating: true});
+        this.setState({isUpdating: true, filteredYear: year});
         this.fetchReportByYear(year);
     };
 
     filterByMonth = (month: number, _pageNumber: number): void => {
-        this.setState({isUpdating: true});
+        this.setState({isUpdating: true, filteredMonth: month});
         this.fetchReportByMonth(this.state.filteredYear, month);
     };
 
@@ -59,7 +82,7 @@ export default class FederalLegislationMonitoringPage extends Component<FederalL
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, filteredMonth, isUpdating} = this.state;
+        const {report, filteredYear, filteredMonth, isUpdating, error, errorMessage} = this.state;
 
         const monthsFilterItems = [{itemValue: 1, label: "Январь"}, {itemValue: 2, label: "Ферваль"},
             {itemValue: 3, label: "Март"}, {itemValue: 4, label: "Апрель"},
@@ -82,9 +105,10 @@ export default class FederalLegislationMonitoringPage extends Component<FederalL
                             <NewsFilter filterName="Фильтр по месяцам" fetchFunc={this.filterByMonth} filterItems={monthsFilterItems}/>
                         </div>
                         {(filteredYear !== 0 && filteredMonth !== 0) && <h2 className="text-center page__title">{`${filteredYear} Год ${resolveMonths(filteredMonth)}`}</h2>}
-                        {isUpdating && <UpdateComponent/>}
-                        {report.text.length === 0 && <LoadingComponent/>}
-                        {ReactHtmlParser(report.text)}
+                        {(isUpdating && !error) && <UpdateComponent/>}
+                        {(report.text.length === 0 && !error) && <LoadingComponent/>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
+                        {!error && ReactHtmlParser(report.text)}
                     </div>
                 </div>
                 <Footer/>

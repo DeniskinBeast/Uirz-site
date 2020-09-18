@@ -7,20 +7,28 @@ import {Navbar} from "../Components/Navbar/Navbar";
 import {Header} from "../Components/Header";
 import {DocsCards} from "../Components/DocsCards/DocsCards";
 import {LoadingComponent} from "../Components/Loading";
+import {connectionErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface PublicationsPageState {
-    publications: DocsCardData[]
+    publications: DocsCardData[],
+    error: boolean,
+    errorMessage: string
 }
 
 export default class PublicationsPage extends Component<PublicationsPageState> {
     state: PublicationsPageState = {
-        publications: []
+        publications: [],
+        error: false,
+        errorMessage: ""
     };
 
     fetchPublications = (): void => {
         fetch("/api/v1/publications")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(publications => this.setState({publications}));
+            .then(publications => this.setState({publications, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     componentDidMount(): void {
@@ -32,10 +40,22 @@ export default class PublicationsPage extends Component<PublicationsPageState> {
     };
 
     render(): React.ReactElement {
-        const {publications} = this.state;
+        const {publications, error, errorMessage} = this.state;
         const publications2009 = this.divideByYear(publications, 2009);
         const publications2010 = this.divideByYear(publications, 2010);
         const publications2011 = this.divideByYear(publications, 2011);
+
+        if (error)
+            return (
+                <>
+                    <Layout title="Публикации"/>
+                    <Navbar/>
+                    <div className="content">
+                        <Header/>
+                        <ErrorComponent errorMessage={errorMessage}/>
+                    </div>
+                </>
+            );
 
         return (
             <>

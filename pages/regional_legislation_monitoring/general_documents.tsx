@@ -9,34 +9,49 @@ import {UpdateComponent} from "../../Components/UpdateComponent";
 import {LoadingComponent} from "../../Components/Loading";
 import ReactHtmlParser from "react-html-parser";
 import {Footer} from "../../Components/Footer";
+import ErrorComponent from "../../Components/ErrorComponent";
+import {connectionErrorHandler, emptyContentErrorHandler} from "../../server/Handlers/errorHanlders";
 
 interface GeneralDocumentsMonitoringPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
-    isUpdating: boolean
+    isUpdating: boolean,
+    error: boolean,
+    errorMessage: string
 }
 
 export default class GeneralDocumentsMonitoringPage extends Component<GeneralDocumentsMonitoringPageState> {
     state: GeneralDocumentsMonitoringPageState = {
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
-        isUpdating: false
+        isUpdating: false,
+        error: false,
+        errorMessage: ""
     };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/generalDocumentsMonitoringLastReport")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, isUpdating: false}));
+            .then(report => this.setState({report, filteredYear: report.year, isUpdating: false, error: false}))
+            .catch(err => {
+                this.setState({error: true, errorMessage: err.message});
+            });
     };
 
     fetchReportByYear = (year: number): void => {
         fetch(`/api/v1/generalDocumentsMonitoringReportByYear/${year}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, isUpdating: false}));
+            .then(emptyContentErrorHandler)
+            .then(report => this.setState({report, isUpdating: false, error: false}))
+            .catch(err => {
+                this.setState({error: true, errorMessage: err.message});
+            });
     };
 
     filterByYear = (year: number, _pageNumber: number): void => {
-        this.setState({isUpdating: true});
+        this.setState({isUpdating: true, filteredYear: year});
         this.fetchReportByYear(year);
     };
 
@@ -45,7 +60,7 @@ export default class GeneralDocumentsMonitoringPage extends Component<GeneralDoc
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, isUpdating} = this.state;
+        const {report, filteredYear, isUpdating, error, errorMessage} = this.state;
         const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/main", as: "/regional_legislation_monitoring/main"},
             {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/regional_law", as: "/regional_legislation_monitoring/regional_law"},
             {label: "Указы губернатора", href: "/regional_legislation_monitoring/governor_decrees", as: "/regional_legislation_monitoring/governor_decrees"},
@@ -67,9 +82,10 @@ export default class GeneralDocumentsMonitoringPage extends Component<GeneralDoc
                             <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
                         </div>
                         {filteredYear !== 0 && <h2 className="text-center page__title">{`${filteredYear} Год`}</h2>}
-                        {isUpdating && <UpdateComponent/>}
-                        {report.text.length === 0 && <LoadingComponent/>}
-                        {ReactHtmlParser(report.text)}
+                        {(isUpdating && !error) && <UpdateComponent/>}
+                        {(report.text.length === 0 && !error) && <LoadingComponent/>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
+                        {!error && ReactHtmlParser(report.text)}
                     </div>
                 </div>
                 <Footer/>

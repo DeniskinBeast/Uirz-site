@@ -8,20 +8,28 @@ import {DocsCards} from "../Components/DocsCards/DocsCards";
 import {LoadingComponent} from "../Components/Loading";
 
 import {DocsCardData} from "../Types/DocsCardData";
+import {connectionErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface ConstituentDocsPageState {
-    docsCards: DocsCardData[]
+    docsCards: DocsCardData[],
+    error: boolean,
+    errorMessage: string
 }
 
 export default class ConstituentDocsPage extends Component<ConstituentDocsPageState> {
     state: ConstituentDocsPageState = {
-        docsCards: []
+        docsCards: [],
+        error: false,
+        errorMessage: ""
     };
 
     fetchConstituentDocs = (): void => {
         fetch("/api/v1/constituent_docs")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(docsCards => this.setState({docsCards}))
+            .then(docsCards => this.setState({docsCards, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     componentDidMount(): void {
@@ -29,7 +37,7 @@ export default class ConstituentDocsPage extends Component<ConstituentDocsPageSt
     }
 
     render(): React.ReactElement {
-        const {docsCards} = this.state;
+        const {docsCards, error, errorMessage} = this.state;
 
         return (
         <>
@@ -39,8 +47,9 @@ export default class ConstituentDocsPage extends Component<ConstituentDocsPageSt
                 <Header/>
                 <div className="container">
                     <h1 className="page__title text-center">Учредительные документы</h1>
-                    {docsCards.length == 0 && <LoadingComponent/>}
-                    <DocsCards docsCards={docsCards}/>
+                    {(docsCards.length == 0 && !error) && <LoadingComponent/>}
+                    {!error && <DocsCards docsCards={docsCards}/>}
+                    {error && <ErrorComponent errorMessage={errorMessage}/>}
                 </div>
             </div>
             <Footer/>

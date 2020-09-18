@@ -11,13 +11,17 @@ import {LoadingComponent} from "../Components/Loading";
 import {UpdateComponent} from "../Components/UpdateComponent";
 import {scroll} from "../Scripts/scroll";
 import ReactPaginate from "react-paginate";
+import {connectionErrorHandler, emptyContentErrorHandler} from "../server/Handlers/errorHanlders";
+import ErrorComponent from "../Components/ErrorComponent";
 
 interface LegislationReviewsPageState {
     reviews: DocsCardData[],
     page: number,
     isUpdating: boolean,
     filteredYear: number,
-    reviewsCount: number
+    reviewsCount: number,
+    error: boolean,
+    errorMessage: string
 }
 
 export default class LegislationReviewsPage extends Component<LegislationReviewsPageState>  {
@@ -26,42 +30,54 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
         page: 0,
         isUpdating: false,
         filteredYear: 0,
-        reviewsCount: 0
+        reviewsCount: 0,
+        error: false,
+        errorMessage: ""
     };
 
     fetchReviewsPage = (pageNumber: number): void => {
         fetch(`/api/v1/legislationReviews/${pageNumber}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(reviews => this.setState({reviews, isUpdating: false, filteredYear: 0, page: pageNumber}))
+            .then(reviews => this.setState({reviews, isUpdating: false, filteredYear: 0, page: pageNumber, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchReviewsCount = (): void => {
         fetch("/api/v1/legislationReviewsCount")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(reviewsCount => this.setState({reviewsCount}));
+            .then(reviewsCount => this.setState({reviewsCount}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchReviewsByYear = (year: number, pageNumber: number): void => {
         fetch(`/api/v1/legislationReviewsByYear/${year}/${pageNumber}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(reviews => this.setState({reviews, isUpdating: false, filteredYear: year, page: pageNumber}))
+            .then(emptyContentErrorHandler)
+            .then(reviews => this.setState({reviews, isUpdating: false, page: pageNumber, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
     fetchReviewsCountByYear = (year: number): void => {
         fetch(`/api/v1/legislationReviewsCountByYear/${year}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(reviewsCount => this.setState({reviewsCount}));
+            .then(reviewsCount => this.setState({reviewsCount}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}))
     };
 
 
     filterByYear = (year: number, pageNumber: number): void => {
         this.setState({isUpdating: true});
-        if (year == 0)
+        if (year === 0)
         {
             this.fetchReviewsCount();
             this.fetchReviewsPage(pageNumber);
         }
         else {
+            this.setState({filteredYear: year});
             this.fetchReviewsCountByYear(year);
             this.fetchReviewsByYear(year, pageNumber);
         }
@@ -73,7 +89,7 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
     }
 
     render(): React.ReactElement {
-        const {reviews, reviewsCount, isUpdating, filteredYear, page} = this.state;
+        const {reviews, reviewsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
         const reviewsPerPage = 6;
         const pagesCount = Math.ceil(reviewsCount / reviewsPerPage);
         const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2010, label: "2010"}, {itemValue: 2009, label: "2009"}];
@@ -87,9 +103,10 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
                     <h1 id="legislation_reviews" className="text-center page__title">Тематические обзоры законодательства</h1>
                     <div className="container">
                         <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
-                        {reviews.length == 0 && <LoadingComponent/>}
-                        {isUpdating && <UpdateComponent/>}
-                        <DocsCards docsCards={reviews}/>
+                        {(reviews.length == 0 && !error) && <LoadingComponent/>}
+                        {(isUpdating && !error) && <UpdateComponent/>}
+                        {!error && <DocsCards docsCards={reviews}/>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
                         <ReactPaginate pageCount={pagesCount} pageRangeDisplayed={2} marginPagesDisplayed={2}
                                        containerClassName={"pagination justify-content-center"}
                                        pageClassName={"page-item"} pageLinkClassName={"page-link"} previousLinkClassName={"page-link"}

@@ -10,12 +10,16 @@ import {LoadingComponent} from "../../Components/Loading";
 import ReactHtmlParser from "react-html-parser";
 import {Footer} from "../../Components/Footer";
 import {MonitoringSubNav} from "../../Components/MonitoringSubNav/MonitoringSubNav";
+import {connectionErrorHandler, emptyContentErrorHandler} from "../../server/Handlers/errorHanlders";
+import ErrorComponent from "../../Components/ErrorComponent";
 
 interface RegionalLegislationMonitoringPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
     filteredMonth: number,
-    isUpdating: boolean
+    isUpdating: boolean,
+    error: boolean,
+    errorMessage: string
 }
 
 export default class RegionalLegislationMonitoringPage extends Component<RegionalLegislationMonitoringPageState> {
@@ -23,34 +27,44 @@ export default class RegionalLegislationMonitoringPage extends Component<Regiona
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
         filteredMonth: 0,
-        isUpdating: false
+        isUpdating: false,
+        error: false,
+        errorMessage: ""
     };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/regionalMonitoringLastReport")
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false}));
+            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchReportByYear = (year: number): void => {
         fetch(`/api/v1/regionalMonitoringReportByYear/${year}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredYear: report.year, filteredMonth: report.month, isUpdating: false}));
+            .then(emptyContentErrorHandler)
+            .then(report => this.setState({report, filteredMonth: report.month, isUpdating: false, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchReportByMonth = (year: number, month: number): void => {
         fetch(`/api/v1/regionalMonitoringReportByMonth/${year}/${month}`)
+            .then(connectionErrorHandler)
             .then(response => response.json())
-            .then(report => this.setState({report, filteredMonth: report.month, isUpdating: false}));
+            .then(emptyContentErrorHandler)
+            .then(report => this.setState({report, isUpdating: false, error: false}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     filterByYear = (year: number, _pageNumber: number): void => {
-        this.setState({isUpdating: true});
+        this.setState({isUpdating: true, filteredYear: year});
         this.fetchReportByYear(year);
     };
 
     filterByMonth = (month: number, _pageNumber: number): void => {
-        this.setState({isUpdating: true});
+        this.setState({isUpdating: true, filteredMonth: month});
         this.fetchReportByMonth(this.state.filteredYear, month);
     };
 
@@ -59,7 +73,7 @@ export default class RegionalLegislationMonitoringPage extends Component<Regiona
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, filteredMonth, isUpdating} = this.state;
+        const {report, filteredYear, filteredMonth, isUpdating, error, errorMessage} = this.state;
         const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/main", as: "/regional_legislation_monitoring/main"},
             {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/regional_law", as: "/regional_legislation_monitoring/regional_law"},
             {label: "Указы губернатора", href: "/regional_legislation_monitoring/governor_decrees", as: "/regional_legislation_monitoring/governor_decrees"},
@@ -88,9 +102,10 @@ export default class RegionalLegislationMonitoringPage extends Component<Regiona
                             <NewsFilter filterName="Фильтр по месяцам" fetchFunc={this.filterByMonth} filterItems={monthsFilterItems}/>
                         </div>
                         {(filteredYear !== 0 && filteredMonth !== 0) && <h2 className="text-center page__title">{`${filteredYear} Год ${resolveMonths(filteredMonth)}`}</h2>}
-                        {isUpdating && <UpdateComponent/>}
-                        {report.text.length === 0 && <LoadingComponent/>}
-                        {ReactHtmlParser(report.text)}
+                        {(isUpdating && !error) && <UpdateComponent/>}
+                        {(report.text.length === 0 && !error) && <LoadingComponent/>}
+                        {error && <ErrorComponent errorMessage={errorMessage}/>}
+                        {!error && ReactHtmlParser(report.text)}
                     </div>
                 </div>
                 <Footer/>
