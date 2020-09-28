@@ -144,10 +144,7 @@ export default class ExpertsCouncilPastMeetingsPage extends Component<ExpertsCou
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           if (filteredYear !== 0)
-                                               this.fetchPastMeetingsByYear(filteredYear, selectedItem.selected);
-                                           else
-                                               this.fetchPastMeetingsPage(selectedItem.selected);
+                                           filteredYear !== 0 ? this.fetchPastMeetingsByYear(filteredYear, selectedItem.selected) : this.fetchPastMeetingsPage(selectedItem.selected);
                                            scroll("instNews");
                                        }}/>
                     </div>

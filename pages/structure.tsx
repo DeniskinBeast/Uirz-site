@@ -68,7 +68,7 @@ export default class StructurePage extends Component<StructurePageState> {
 
     render(): React.ReactElement {
         const {unnamedCards, expertCards, developCards, systematizationCards, organizationCards, unnamed2Cards, error, errorMessage} = this.state;
-        const subNavItems = [{label: "Неназванный отдел", scrollTo: "sector_1"}, {label: "Экспертный совет", scrollTo: "sector_2"},
+        const subNavItems = [{label: "", scrollTo: "sector_1"}, {label: "Экспертный совет", scrollTo: "sector_2"},
             {label: "Отдел разработки нормативных правовых актов", scrollTo: "sector_3"},
             {label: "Отдел систематизации законодательства и справочно-информационной работы", scrollTo: "sector_5"},
             {label: "Организационно-правовой отдел", scrollTo: "sector_6"}];

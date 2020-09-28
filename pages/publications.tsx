@@ -9,6 +9,7 @@ import {DocsCards} from "../Components/DocsCards/DocsCards";
 import {LoadingComponent} from "../Components/Loading";
 import {connectionErrorHandler} from "../server/Handlers/errorHanlders";
 import ErrorComponent from "../Components/ErrorComponent";
+import { Footer } from "../Components/Footer";
 
 interface PublicationsPageState {
     publications: DocsCardData[],
@@ -74,6 +75,7 @@ export default class PublicationsPage extends Component<PublicationsPageState> {
                         <DocsCards docsCards={publications2011}/>
                     </div>
                 </div>
+                <Footer/>
             </>
         );
     }

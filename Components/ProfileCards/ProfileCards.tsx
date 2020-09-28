@@ -14,7 +14,7 @@ interface ProfileCardsProps {
 function getSectorName(sectorId: number): string {
     switch (sectorId) {
         case 1: {
-            return "Неназванный отдел";
+            return "";
         }
         case 2:
             return "Экспертный совет";

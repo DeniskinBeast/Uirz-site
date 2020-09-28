@@ -1,9 +1,13 @@
 import {Router} from "express";
 
 import {
+    actsDevPageLastReport,
+    actsDevPageReportByYear,
     constituentDocsPage,
     corruptionCounteringPageLocalActs,
     corruptionCounteringPageReports,
+    eventsParticipationPageLastReport,
+    eventsParticipationReportByYear,
     expertCouncilPageProfiles,
     expertsCouncilPageLastMeetings,
     expertsCouncilPageLastWorkingGroups,
@@ -12,7 +16,8 @@ import {
     expertsCouncilPastMeetingsPageCount,
     expertsCouncilPastMeetingsPageCountByYear,
     expertsCouncilWorkingGroupPage,
-    expertsCouncilWorkingGroupPageByYear, expertsCouncilWorkingGroupPageByYearCount,
+    expertsCouncilWorkingGroupPageByYear,
+    expertsCouncilWorkingGroupPageByYearCount,
     expertsCouncilWorkingGroupPageCount,
     federalLegislationMonitoringPageByMonth,
     federalLegislationMonitoringPageByYear,
@@ -25,6 +30,10 @@ import {
     lawNewsPageByYear,
     lawNewsPageCountByYear,
     lawNewsPageNewsCount,
+    legalExpertisePageLastReport,
+    legalExpertisePageReportByYear,
+    legislationAnalysisPageLastReport,
+    legislationAnalysisPageReportByYear,
     legislationReviewsPage,
     legislationReviewsPageByYear,
     legislationReviewsPageCountByYear,
@@ -33,6 +42,16 @@ import {
     mainPageLastInstNews,
     mainPageLastLawNews,
     publicationsPage,
+    regionalLegislationPageGeneralDocumentsByYear,
+    regionalLegislationPageGeneralDocumentsLast,
+    regionalLegislationPageGovernmentDecreesByMonth,
+    regionalLegislationPageGovernmentDecreesByYear,
+    regionalLegislationPageGovernmentDecreesLast,
+    regionalLegislationPageGovernorDecreesByMonth,
+    regionalLegislationPageGovernorDecreesByYear,
+    regionalLegislationPageGovernorDecreesLast, regionalLegislationPageRegionLawByMonth,
+    regionalLegislationPageRegionLawByYear,
+    regionalLegislationPageRegionLawLast,
     structurePage
 } from "../Controllers/apiController";
 
@@ -105,3 +124,41 @@ apiRouter.get("/expertsCouncilWorkingGroupCount", expertsCouncilWorkingGroupPage
 apiRouter.get("/expertsCouncilWorkingGroupByYear/:year/:pageNumber", expertsCouncilWorkingGroupPageByYear);
 
 apiRouter.get("/expertsCouncilWorkingGroupCountByYear/:year", expertsCouncilWorkingGroupPageByYearCount);
+
+apiRouter.get("/generalDocumentsMonitoringLastReport", regionalLegislationPageGeneralDocumentsLast);
+
+apiRouter.get("/generalDocumentsMonitoringReportByYear/:year", regionalLegislationPageGeneralDocumentsByYear);
+
+apiRouter.get("/governmentDecreesMonitoringLastReport", regionalLegislationPageGovernmentDecreesLast);
+
+apiRouter.get("/governmentDecreesMonitoringReportByYear/:year", regionalLegislationPageGovernmentDecreesByYear);
+
+apiRouter.get("/governmentDecreesMonitoringReportByMonth/:year/:month", regionalLegislationPageGovernmentDecreesByMonth);
+
+apiRouter.get("/governorDecreesMonitoringLastReport", regionalLegislationPageGovernorDecreesLast);
+
+apiRouter.get("/governorDecreesMonitoringReportByYear/:year", regionalLegislationPageGovernorDecreesByYear);
+
+apiRouter.get("/governorDecreesMonitoringReportByMonth/:year/:month", regionalLegislationPageGovernorDecreesByMonth);
+
+apiRouter.get("/regionalMonitoringLastReport", regionalLegislationPageRegionLawLast);
+
+apiRouter.get("/regionalMonitoringReportByYear/:year", regionalLegislationPageRegionLawByYear);
+
+apiRouter.get("/regionalMonitoringReportByMonth/:year/:month", regionalLegislationPageRegionLawByMonth);
+
+apiRouter.get("/actsDevLastReport", actsDevPageLastReport);
+
+apiRouter.get("/actsDevReportByYear/:year", actsDevPageReportByYear);
+
+apiRouter.get("/legalExpertiseLastReport", legalExpertisePageLastReport);
+
+apiRouter.get("/legalExpertiseReportByYear/:year", legalExpertisePageReportByYear);
+
+apiRouter.get("/legislationAnalysisLastReport", legislationAnalysisPageLastReport);
+
+apiRouter.get("/legislationAnalysisReportByYear/:year", legislationAnalysisPageReportByYear);
+
+apiRouter.get("/eventsParticipationLastReport", eventsParticipationPageLastReport);
+
+apiRouter.get("/eventsParticipationReportByYear/:year", eventsParticipationReportByYear);

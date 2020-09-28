@@ -117,10 +117,7 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           if (filteredYear !== 0)
-                                               this.fetchReviewsByYear(filteredYear, selectedItem.selected);
-                                           else
-                                               this.fetchReviewsPage(selectedItem.selected);
+                                           filteredYear !== 0 ? this.fetchReviewsByYear(filteredYear, selectedItem.selected) : this.fetchReviewsPage(selectedItem.selected);
                                            scroll("legislation_reviews");
                                        }}/>
                     </div>

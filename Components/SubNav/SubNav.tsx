@@ -10,7 +10,7 @@ interface SubNavProps {
 
 function renderSubNavItem(subNavItem: {label: string, scrollTo: string}) {
     return (
-        <ScrollLink href="" className={"btn " + styles.nav_item} activeClass="active" to={subNavItem.scrollTo} offset={-50} smooth={true}>
+        <ScrollLink href="" className={"btn " + styles.nav_item} activeClass="active" to={subNavItem.scrollTo} offset={-70} smooth={true}>
             {subNavItem.label}
         </ScrollLink>
     )

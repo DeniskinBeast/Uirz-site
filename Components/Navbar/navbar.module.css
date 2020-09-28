@@ -1,36 +1,39 @@
 .navbar {
-    background: #607afc;
+    justify-content: space-between;
+    background: #fff;
+    box-shadow: 0 0 20px #ccc;
 }
 
 .nav_brand {
-    color: #fff;
+    font-size: 30px;
+    color: #607afc;
 }
 
 .nav_brand:before {
     background: url("../../public/dom.png");
 }
 
-.nav_link {
-    color: #f4f4f4;
-    cursor: pointer;
-}
-
-.nav_link {
-    margin-right: 1em !important;
-}
-
 .nav_btn {
-    color: #fff;
-    background: #607afc;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #607afc;
+    background: #fff;
+    padding: 10px;
+    border: none;
 }
 
 .nav_btn:hover {
-    color: #607afc;
-    background: #fff;
+    color: #fff;
+    background: #607afc;
     cursor: pointer;
 }
 
+.nav_btn:active, .nav_btn:focus {
+    box-shadow: none;
+}
+
 .dropdown_item {
+    color: #607afc;
     white-space: nowrap;
 }
 
@@ -54,5 +57,5 @@
 }
 
 .navbar_toggler_icon {
-    background: url("../../public/toggler_v1.png");
+    background: url("../../public/toggler_v2.png");
 }

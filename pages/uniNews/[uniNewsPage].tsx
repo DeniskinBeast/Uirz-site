@@ -99,11 +99,11 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
         const {uniNews, newsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
         const newsPerPage = 6;
         const pagesCount = Math.ceil(newsCount / newsPerPage);
-        const filterItems = [{itemValue: 2020, label: "2020"}, {itemValue: 2019, label: "2019"},
+        const filterItems = [{itemValue: 0, label: "Все годы"}, {itemValue: 2020, label: "2020"}, {itemValue: 2019, label: "2019"},
             {itemValue: 2018, label: "2018"}, {itemValue: 2017, label: "2017"}, {itemValue: 2016, label: "2016"},
             {itemValue: 2015, label: "2015"}, {itemValue: 2014, label: "2014"}, {itemValue: 2013, label: "2013"},
             {itemValue: 2012, label: "2012"}, {itemValue: 2011, label: "2011"}, {itemValue: 2010, label: "2010"}];
-        
+
         if (error)
             return (
                 <>
@@ -120,7 +120,7 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                     <Footer/>
                 </>
             );
-        
+
         return (
             <>
                 <Layout title="Новости института"/>
@@ -143,10 +143,7 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           if (filteredYear !== 0)
-                                               this.fetchUniNewsByYear(filteredYear, selectedItem.selected);
-                                           else
-                                               this.fetchUniNewsPage(selectedItem.selected);
+                                           filteredYear !== 0 ? this.fetchUniNewsByYear(filteredYear, selectedItem.selected) : this.fetchUniNewsPage(selectedItem.selected);                                        
                                            scroll("instNews");
                                        }}/>
                     </div>

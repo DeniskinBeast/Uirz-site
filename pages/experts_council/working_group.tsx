@@ -140,10 +140,7 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           if (filteredYear !== 0)
-                                               this.fetchWorkingGroupByYear(filteredYear, selectedItem.selected);
-                                           else
-                                               this.fetchWorkingGroupPage(selectedItem.selected);
+                                           filteredYear !== 0 ? this.fetchWorkingGroupByYear(filteredYear, selectedItem.selected) : this.fetchWorkingGroupPage(selectedItem.selected);
                                            scroll("working_group");
                                        }}/>
                     </div>

@@ -23,7 +23,7 @@ export function Navbar() {
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Об институте
                     </button>
-                    <div className="dropdown-menu">
+                    <div className={"dropdown-menu " + styles.dropdown_menu}>
                         <Link href="/structure" as="structure">
                             <a className={"dropdown-item " + styles.dropdown_item}>Структура института</a>
                         </Link>
@@ -46,7 +46,7 @@ export function Navbar() {
                             aria-haspopup="true" aria-expanded="false">
                         Основные направления деятельности
                     </button>
-                    <div className="dropdown-menu">
+                    <div className={"dropdown-menu " + styles.dropdown_menu}>
                         <Link href="/acts_development" as="acts_development">
                             <a className={"dropdown-item " + styles.dropdown_item}>Разработка проектов нормативных правовых актов</a>
                         </Link>
@@ -72,7 +72,7 @@ export function Navbar() {
                             aria-haspopup="true" aria-expanded="false">
                         Доклады, обзоры, публикации
                     </button>
-                    <div className="dropdown-menu">
+                    <div className={"dropdown-menu " + styles.dropdown_menu}>
                         <Link href="/legislation_status" as="legislation_status">
                             <a className={"dropdown-item " + styles.dropdown_item}>Доклады о состоянии законодательства</a>
                         </Link>

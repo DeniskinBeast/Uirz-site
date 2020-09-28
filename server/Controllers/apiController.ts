@@ -11,6 +11,11 @@ import {Op} from "sequelize";
 import {LegislationReviews} from "../Models/LegislationReviews";
 import {FederalLegislationMonitoring} from "../Models/FederalLegislationMonitoring";
 import {WorkingGroup} from "../Models/WorkingGroup";
+import {RegionalLegislationMonitoring} from "../Models/RegionalLegislationMonitoring";
+import { ActsDevelopment } from "Models/ActsDevelopment";
+import { LegalExpertise } from "Models/LegalExpertise";
+import { LegislationAnalysis } from "Models/LegislationAnalysis";
+import { EventsParticipation } from "Models/EventsParticipation";
 
 // @ts-ignore
 export async function structurePage(req: Request, res: Response) {
@@ -482,4 +487,266 @@ export async function expertsCouncilWorkingGroupPageByYearCount(req: Request, re
     });
 
     res.send(JSON.stringify(newsCount));
+}
+
+export async function regionalLegislationPageGeneralDocumentsLast(_req: Request, res: Response) {
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            type: "general_docs"
+        },
+        order: [
+            ["year", "DESC"],
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGeneralDocumentsByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            type: "general_docs"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernmentDecreesLast(_req: Request, res: Response) {
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            type: "government_decrees"
+        },
+        order: [
+            ["year", "DESC"],
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernmentDecreesByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            type: "government_decrees"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernmentDecreesByMonth(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+    const month = parseInt(req.params.month);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            month: month,
+            type: "government_decrees"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernorDecreesLast(_req: Request, res: Response) {
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            type: "governor_decrees"
+        },
+        order: [
+            ["year", "DESC"],
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernorDecreesByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            type: "governor_decrees"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageGovernorDecreesByMonth(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+    const month = parseInt(req.params.month);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            month: month,
+            type: "governor_decrees"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageRegionLawLast(_req: Request, res: Response) {
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            type: "regional_law"
+        },
+        order: [
+            ["year", "DESC"],
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageRegionLawByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            type: "regional_law"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationPageRegionLawByMonth(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+    const month = parseInt(req.params.month);
+
+    const report = await RegionalLegislationMonitoring.findOne({
+        where: {
+            year: year,
+            month: month,
+            type: "regional_law"
+        },
+        order: [
+            ["month", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function actsDevPageLastReport(_req: Request, res: Response) {
+    const report = await ActsDevelopment.findOne({
+        order: [
+            ["year", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function actsDevPageReportByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await ActsDevelopment.findOne({
+        where: {
+            year: year
+        }
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function legalExpertisePageLastReport(_req: Request, res: Response) {
+    const report = await LegalExpertise.findOne({
+        order: [
+            ["year", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function legalExpertisePageReportByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await LegalExpertise.findOne({
+        where: {
+            year: year
+        }
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function legislationAnalysisPageLastReport(_req: Request, res: Response) {
+    const report = await LegislationAnalysis.findOne({
+        order: [
+            ["year", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function legislationAnalysisPageReportByYear(req: Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await LegislationAnalysis.findOne({
+        where: {
+            year: year
+        }
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function eventsParticipationPageLastReport(_req: Request, res: Response) {
+    const report = await EventsParticipation.findOne({
+        order: [
+            ["year", "DESC"]
+        ]
+    });
+
+    res.send(JSON.stringify(report));
+}
+
+export async function eventsParticipationReportByYear(req:Request, res: Response) {
+    const year = parseInt(req.params.year);
+
+    const report = await EventsParticipation.findOne({
+        where: {
+            year: year
+        }
+    });
+
+    res.send(JSON.stringify(report));
 }

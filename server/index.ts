@@ -26,5 +26,5 @@ app.prepare().then(() => {
     server.use("/api/v1", apiRouter);
     server.use("/docs", contentRouter);
     server.all("*", requestHandler);
-    server.listen(process.env.PORT || 3000);
+    server.listen(process.env.APP_PORT || process.env.PORT || 3000);
 });

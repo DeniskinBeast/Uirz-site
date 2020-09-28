@@ -143,10 +143,7 @@ export default class LawNewsPage extends Component<LawNewsPageState> {
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           if (filteredYear !== 0)
-                                               this.fetchLawNewsByYear(filteredYear, selectedItem.selected);
-                                           else
-                                               this.fetchLawNewsPage(selectedItem.selected);
+                                           filteredYear !== 0 ? this.fetchLawNewsByYear(filteredYear, selectedItem.selected) : this.fetchLawNewsPage(selectedItem.selected);
                                            scroll("lawNews");
                                        }}/>
                     </div>
