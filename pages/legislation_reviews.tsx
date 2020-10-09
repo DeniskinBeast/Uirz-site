@@ -17,6 +17,7 @@ import ErrorComponent from "../Components/ErrorComponent";
 interface LegislationReviewsPageState {
     reviews: DocsCardData[],
     page: number,
+    years: {year: number}[],
     isUpdating: boolean,
     filteredYear: number,
     reviewsCount: number,
@@ -28,11 +29,20 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
     state: LegislationReviewsPageState = {
         reviews: [],
         page: 0,
+        years: [],
         isUpdating: false,
         filteredYear: 0,
         reviewsCount: 0,
         error: false,
         errorMessage: ""
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/legislationReviewsYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchReviewsPage = (pageNumber: number): void => {
@@ -85,14 +95,15 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
 
     componentDidMount(): void {
         this.fetchReviewsCount();
+        this.fetchYearsArrange();
         this.fetchReviewsPage(this.state.page);
     }
 
     render(): React.ReactElement {
-        const {reviews, reviewsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
+        const {reviews, years, reviewsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
         const reviewsPerPage = 6;
         const pagesCount = Math.ceil(reviewsCount / reviewsPerPage);
-        const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2010, label: "2010"}, {itemValue: 2009, label: "2009"}];
+        const filterItems = [{itemValue: 0, label: "Все"}].concat(years.map(year => Object({itemValue: year.year, label: year.year.toString()})));
 
         return (
             <>
@@ -102,7 +113,7 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
                     <Header/>
                     <h1 id="legislation_reviews" className="text-center page__title">Тематические обзоры законодательства</h1>
                     <div className="container">
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                         {(reviews.length == 0 && !error) && <LoadingComponent/>}
                         {(isUpdating && !error) && <UpdateComponent/>}
                         {!error && <DocsCards docsCards={reviews}/>}
@@ -113,7 +124,7 @@ export default class LegislationReviewsPage extends Component<LegislationReviews
                                        previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
                                        breakClassName={"page-item"} breakLinkClassName={"page-link"}
                                        previousLabel={"Назад"} nextLabel={"Вперед"}
-                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       activeClassName={"active page-item_active"} disabledClassName={"disabled"}
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});

@@ -21,6 +21,7 @@ interface UniNewsPageState {
     page: number,
     isUpdating: boolean,
     filteredYear: number,
+    years: {year: number}[],
     newsCount: number,
     error: boolean,
     errorMessage: string;
@@ -38,9 +39,18 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
         page: 0,
         isUpdating: false,
         filteredYear: 0,
+        years: [],
         newsCount: 0,
         error: false,
         errorMessage: ""
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/uniNewsYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchUniNewsPage = (pageNumber: number): void => {
@@ -93,16 +103,14 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
     componentDidMount(): void {
         this.fetchUniNewsPageCount();
         this.fetchUniNewsPage(this.state.page);
+        this.fetchYearsArrange();
     };
 
     render(): React.ReactElement {
-        const {uniNews, newsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
+        const {uniNews, newsCount, isUpdating, filteredYear, years, page, error, errorMessage} = this.state;
         const newsPerPage = 6;
         const pagesCount = Math.ceil(newsCount / newsPerPage);
-        const filterItems = [{itemValue: 0, label: "Все годы"}, {itemValue: 2020, label: "2020"}, {itemValue: 2019, label: "2019"},
-            {itemValue: 2018, label: "2018"}, {itemValue: 2017, label: "2017"}, {itemValue: 2016, label: "2016"},
-            {itemValue: 2015, label: "2015"}, {itemValue: 2014, label: "2014"}, {itemValue: 2013, label: "2013"},
-            {itemValue: 2012, label: "2012"}, {itemValue: 2011, label: "2011"}, {itemValue: 2010, label: "2010"}];
+        const filterItems = [{itemValue: 0, label: "Все"}].concat(years.map(year => Object({itemValue: year.year, label: year.year.toString()})));
 
         if (error)
             return (
@@ -113,7 +121,7 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                         <Header/>
                         <h1 id="instNews" className="text-center page__title">Новости института</h1>
                         <div className="container">
-                            <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                            <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                             <ErrorComponent errorMessage={errorMessage}/>
                         </div>
                     </div>
@@ -129,7 +137,7 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                     <Header/>
                     <h1 id="instNews" className="text-center page__title">Новости института</h1>
                     <div className="container">
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                         {uniNews.length == 0 && <LoadingComponent/>}
                         {isUpdating && <UpdateComponent/>}
                         <NewsCards newsCards={uniNews} cardsType="inst_news"/>
@@ -139,11 +147,11 @@ export default class UniNewsPage extends Component<UniNewsPageState> {
                                        previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
                                        breakClassName={"page-item"} breakLinkClassName={"page-link"}
                                        previousLabel={"Назад"} nextLabel={"Вперед"}
-                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       activeClassName={"active page-item_active"} disabledClassName={"disabled"}
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});
-                                           filteredYear !== 0 ? this.fetchUniNewsByYear(filteredYear, selectedItem.selected) : this.fetchUniNewsPage(selectedItem.selected);                                        
+                                           filteredYear !== 0 ? this.fetchUniNewsByYear(filteredYear, selectedItem.selected) : this.fetchUniNewsPage(selectedItem.selected);
                                            scroll("instNews");
                                        }}/>
                     </div>

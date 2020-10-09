@@ -1,21 +1,23 @@
 .nav {
-    background: #607afc;
+    background: #fff;
     margin: 10px 15px 20px 15px;
     border-radius: .25rem;
     justify-content: center;
+    box-shadow: 0 0 10px #ccc;
 }
 
 .nav_item {
     white-space: pre-wrap;
-    font-size: 12px;
-    background: #607afc;
+    font-size: 0.8rem;
+    background: #fff;
     padding: 10px;
-    color: white;
+    color: #607afc;
+    border: none;
 }
 
 .nav_item:hover {
-    background: #fff;
-    color: #607afc;
+    background: #607afc;
+    color: #fff;
 }
 
 .navbar_collapse {
@@ -27,7 +29,7 @@
 }
 
 .navbar_toggler_icon {
-    background: url("../../public/toggler_v1.png");
+    background: url("../../public/toggler_v2.png");
 }
 
 .navbar_nav {

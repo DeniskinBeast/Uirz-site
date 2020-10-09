@@ -106,7 +106,7 @@ export default class ExpertsCouncilPage extends Component<ExpertsCouncilPageStat
                         {!error && <NewsCards newsCards={lastMeetings} cardsType="inst_news"/>}
                         {!error && <div className="btn_container">
                             <Link href="/experts_council/past_meetings" as="/experts_council/past_meetings">
-                                <a className="btn btn-outline-secondary uninews_link">Посмотреть все повестки</a>
+                                <a className="btn uninews_link">Посмотреть все повестки</a>
                             </Link>
                         </div>}
                         {error && <ErrorComponent errorMessage={errorMessage}/>}
@@ -119,7 +119,7 @@ export default class ExpertsCouncilPage extends Component<ExpertsCouncilPageStat
                         {!error && <NewsCards newsCards={lastWorkingGroups} cardsType="working_group"/>}
                         {!error && <div className="btn_container">
                             <Link href="/experts_council/working_group" as="/experts_council/working_group">
-                                <a className="btn btn-outline-secondary uninews_link">Посмотреть все</a>
+                                <a className="btn uninews_link">Посмотреть все</a>
                             </Link>
                         </div>}
                         {error && <ErrorComponent errorMessage={errorMessage}/>}

@@ -17,6 +17,7 @@ import ErrorComponent from "../Components/ErrorComponent";
 interface LegalExpertisePageState {
     report: LegislationMonitoringData,
     filteredYear: number,
+    years: {year: number}[],
     isUpdating: boolean,
     error: boolean,
     errorMessage: string
@@ -26,10 +27,19 @@ export default class LegalExpertisePage extends Component<LegalExpertisePageStat
     state: LegalExpertisePageState = {
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
+        years: [],
         isUpdating: false,
         error: false,
         errorMessage: ""
-    }
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/legalExpertiseYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
+    };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/legalExpertiseLastReport")
@@ -55,14 +65,14 @@ export default class LegalExpertisePage extends Component<LegalExpertisePageStat
 
     componentDidMount(): void {
         this.fetchLastReport();
+        this.fetchYearsArrange();
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, isUpdating, error, errorMessage} = this.state;
+        const {report, filteredYear, years, isUpdating, error, errorMessage} = this.state;
 
-        const yearsFilterItems = [{itemValue: 2010, label: "2010"}, {itemValue: 2011, label: "2011"}, {itemValue: 2012, label: "2012"}, {itemValue: 2013, label: "2013"}, {itemValue: 2014, label: "2014"},
-         {itemValue: 2015, label: "2015"}, {itemValue: 2016, label: "2016"}, {itemValue: 2017, label: "2017"}, {itemValue: 2018, label: "2018"}, {itemValue: 2019, label: "2019"}];
-        
+        const yearsFilterItems = years.map(year => Object({itemValue: year.year, label: year.year.toString()}));
+
         return (
             <>
                 <Layout title="Правовая экспертиза нормативных правовых актов"/>
@@ -96,7 +106,7 @@ export default class LegalExpertisePage extends Component<LegalExpertisePageStat
                         Экспертного совета. </p>
                         <p><strong>По результатам проведения правовой экспертизы в 2008 году Экспертным советом подготовлено 142
                             заключения, в 2009 году – 164. </strong></p>
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
                         {filteredYear !== 0 && <h2 className="text-center page__title">{`${filteredYear} Год`}</h2>}
                         {(isUpdating && !error) && <UpdateComponent/>}
                         {(report.text.length === 0 && !error) && <LoadingComponent/>}

@@ -3,11 +3,11 @@
     margin: 10px 15px 20px 15px;
     border-radius: .25rem;
     justify-content: center;
-    box-shadow: 0 0 10px #ccc;    
+    box-shadow: 0 0 10px #ccc;
 }
 
 .nav_item {
-    font-size: 15px;
+    font-size: 0.9rem;
     white-space: pre-wrap;
     background: #fff;
     padding: 10px;

@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import {Link as ScrollLink} from "react-scroll";
 
 import styles from "./navbar.module.css";
 
@@ -35,9 +34,6 @@ export function Navbar() {
                         </Link>
                         <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
                             <a className={"dropdown-item " + styles.dropdown_item}>Новости законодательства</a>
-                        </Link>
-                        <Link href="/" as="/">
-                            <ScrollLink className={"dropdown-item " + styles.dropdown_item} href="" activeClass="active" to="contacts" smooth={true} offset={-50}>Контакты</ScrollLink>
                         </Link>
                     </div>
                 </li>

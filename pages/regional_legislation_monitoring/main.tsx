@@ -24,6 +24,9 @@ export default function RegionalLegislationMonitoringMainPage() {
                 <h1 className="text-center page__title">Мониторинг регионального законодательства</h1>
                 <div className="container">
                     <p>Тут должна быть общая информация</p>
+                    <p>Тут должна быть общая информация</p>
+                    <p>Тут должна быть общая информация</p>
+                    <p>Тут должна быть общая информация</p>
                 </div>
             </div>
             <Footer/>

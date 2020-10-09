@@ -16,6 +16,7 @@ import ErrorComponent from "../Components/ErrorComponent";
 
 interface ActsDevelopmentPageState {
     report: LegislationMonitoringData,
+    years: {year: number}[],
     filteredYear: number,
     isUpdating: boolean,
     error: boolean,
@@ -25,11 +26,20 @@ interface ActsDevelopmentPageState {
 export default class ActsDevelopmentPage extends Component<ActsDevelopmentPageState> {
     state: ActsDevelopmentPageState = {
         report: {text: "", month: 0, year: 0},
+        years: [],
         filteredYear: 0,
         isUpdating: false,
         error: false,
         errorMessage: ""
-    }
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/actsDevYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
+    };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/actsDevLastReport")
@@ -55,14 +65,16 @@ export default class ActsDevelopmentPage extends Component<ActsDevelopmentPageSt
 
     componentDidMount(): void {
         this.fetchLastReport();
+        this.fetchYearsArrange();
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, isUpdating, error, errorMessage} = this.state;
+        const {report, years, filteredYear, isUpdating, error, errorMessage} = this.state;
 
-        const yearsFilterItems = [{itemValue: 2011, label: "2011"}, {itemValue: 2012, label: "2012"}, {itemValue: 2013, label: "2013"}, {itemValue: 2014, label: "2014"},
-         {itemValue: 2015, label: "2015"}, {itemValue: 2016, label: "2016"}, {itemValue: 2017, label: "2017"}, {itemValue: 2018, label: "2018"}, {itemValue: 2019, label: "2019"}];
-        
+        const yearsFilterItems = years.map(year => Object({itemValue: year.year, label: year.year.toString()}));
+        // const yearsFilterItems = [{itemValue: 2011, label: "2011"}, {itemValue: 2012, label: "2012"}, {itemValue: 2013, label: "2013"}, {itemValue: 2014, label: "2014"},
+        //  {itemValue: 2015, label: "2015"}, {itemValue: 2016, label: "2016"}, {itemValue: 2017, label: "2017"}, {itemValue: 2018, label: "2018"}, {itemValue: 2019, label: "2019"}];
+
 
         return (
             <>
@@ -105,7 +117,7 @@ export default class ActsDevelopmentPage extends Component<ActsDevelopmentPageSt
                         <p>10) участие в работе по координации законопроектной деятельности в Свердловской области.</p>
                         <p>Большая часть принятых законов Свердловской области разработана работниками данного отдела. </p>
                         <p><strong>Так, в 2008 году Институтом было разработано 108 проектов законов Свердловской области, в 2009 году – 131, в 2010 году - 106. В 2008 году доработано 73 законопроекта, в 2009 году – 88, в 2010 - 65. </strong></p>
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
                         {filteredYear !== 0 && <h2 className="text-center page__title">{`${filteredYear} Год`}</h2>}
                         {(isUpdating && !error) && <UpdateComponent/>}
                         {(report.text.length === 0 && !error) && <LoadingComponent/>}
@@ -116,6 +128,6 @@ export default class ActsDevelopmentPage extends Component<ActsDevelopmentPageSt
                 <Footer/>
             </>
         )
-        
+
     }
 }

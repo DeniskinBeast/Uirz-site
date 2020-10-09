@@ -17,6 +17,7 @@ import { LoadingComponent } from "../Components/Loading";
 interface LegislationAnalysisPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
+    years: {year: number}[],
     isUpdating: boolean,
     error: boolean,
     errorMessage: string
@@ -26,10 +27,19 @@ export default class LegislationAnalysisPage extends Component<LegislationAnalys
     state: LegislationAnalysisPageState = {
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
+        years: [],
         isUpdating: false,
         error: false,
         errorMessage: ""
-    }
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/legislationAnalysisYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
+    };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/legislationAnalysisLastReport")
@@ -55,14 +65,14 @@ export default class LegislationAnalysisPage extends Component<LegislationAnalys
 
     componentDidMount(): void {
         this.fetchLastReport();
+        this.fetchYearsArrange();
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, isUpdating, error, errorMessage} = this.state;
+        const {report, filteredYear, years, isUpdating, error, errorMessage} = this.state;
 
-        const yearsFilterItems = [{itemValue: 2011, label: "2011"}, {itemValue: 2012, label: "2012"}, {itemValue: 2013, label: "2013"}, {itemValue: 2014, label: "2014"},
-         {itemValue: 2015, label: "2015"}, {itemValue: 2016, label: "2016"}, {itemValue: 2017, label: "2017"}, {itemValue: 2018, label: "2018"}, {itemValue: 2019, label: "2019"}];
-        
+        const yearsFilterItems = years.map(year => Object({itemValue: year.year, label: year.year.toString()}));
+
         return (
             <>
                 <Layout title="Систематизация и анализ законодательства"/>
@@ -72,7 +82,7 @@ export default class LegislationAnalysisPage extends Component<LegislationAnalys
                     <UpButton to="legislation_analysis"/>
                     <h1 id="legislation_analysis" className="text-center page__title">Систематизация и анализ
                             законодательства</h1>
-                    <div className="container">                 
+                    <div className="container">
                         <h3 className="text-center page__title">С марта 2009 года:</h3>
                         <p>В целях подготовки предложений по системному совершенствованию
                             законодательства Свердловской области и более полной реализации в нем правотворческой
@@ -98,7 +108,7 @@ export default class LegislationAnalysisPage extends Component<LegislationAnalys
                             включению в план законопроектной работы Законодательного Собрания Свердловской области;</p>
                         <p>7) создание и сопровождение прикладного программного обеспечения для работы с документами в
                             Уральском институте регионального законодательства.</p>
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
                         {filteredYear !== 0 && <h2 className="text-center page__title">{`${filteredYear} Год`}</h2>}
                         {(isUpdating && !error) && <UpdateComponent/>}
                         {(report.text.length === 0 && !error) && <LoadingComponent/>}

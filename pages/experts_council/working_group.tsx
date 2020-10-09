@@ -21,6 +21,7 @@ interface ExpertsCouncilWorkingGroupPageState {
     page: number,
     isUpdating: boolean,
     filteredYear: number,
+    years: {year: number}[],
     newsCount: number,
     error: boolean,
     errorMessage: string
@@ -38,9 +39,18 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
         page: 0,
         isUpdating: false,
         filteredYear: 0,
+        years: [],
         newsCount: 0,
         error: false,
         errorMessage: ""
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/expertsCouncilWorkingGroupYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchWorkingGroupPage = (pageNumber: number): void => {
@@ -92,14 +102,16 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
 
     componentDidMount(): void {
         this.fetchWorkingGroupPageCount();
+        this.fetchYearsArrange();
         this.fetchWorkingGroupPage(0);
     };
 
     render(): React.ReactElement {
-        const {meetings, newsCount, isUpdating, filteredYear, page, error, errorMessage} = this.state;
+        const {meetings, newsCount, isUpdating, filteredYear, years, page, error, errorMessage} = this.state;
         const newsPerPage = 6;
         const pagesCount = Math.ceil(newsCount / newsPerPage);
-        const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2020, label: "2020"}];
+        const filterItems = [{itemValue: 0, label: "Все"}].concat(years.map(year => Object({itemValue: year.year, label: year.year.toString()})));
+        // const filterItems = [{itemValue: 0, label: "Все"}, {itemValue: 2020, label: "2020"}];
 
         if (error)
             return (
@@ -110,7 +122,7 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
                         <Header/>
                         <h1 id="working_group" className="text-center page__title">Повестки прошедших рабочих групп</h1>
                         <div className="container">
-                            <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                            <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                             <ErrorComponent errorMessage={errorMessage}/>
                         </div>
                     </div>
@@ -126,7 +138,7 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
                     <Header/>
                     <h1 id="working_group" className="text-center page__title">Повестки прошедших рабочих групп</h1>
                     <div className="container">
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={filterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={filterItems}/>
                         {meetings.length == 0 && <LoadingComponent/>}
                         {isUpdating && <UpdateComponent/>}
                         <NewsCards newsCards={meetings} cardsType="working_group"/>
@@ -136,7 +148,7 @@ export default class ExpertsCouncilWorkingGroupPage extends Component<ExpertsCou
                                        previousClassName={"page-item"} nextLinkClassName={"page-link"} nextClassName={"page-item"}
                                        breakClassName={"page-item"} breakLinkClassName={"page-link"}
                                        previousLabel={"Назад"} nextLabel={"Вперед"}
-                                       activeClassName={"active"} disabledClassName={"disabled"}
+                                       activeClassName={"active page-item_active"} disabledClassName={"disabled"}
                                        forcePage={page}
                                        onPageChange={selectedItem => {
                                            this.setState({isUpdating: true});

@@ -16,6 +16,7 @@ import ErrorComponent from "../../Components/ErrorComponent";
 interface GovernorDecreesMonitoringPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
+    years: {year: number}[],
     filteredMonth: number,
     isUpdating: boolean,
     error: boolean,
@@ -26,10 +27,19 @@ export default class GovernorDecreesMonitoringPage extends Component<GovernorDec
     state: GovernorDecreesMonitoringPageState = {
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
+        years: [],
         filteredMonth: 0,
         isUpdating: false,
         error: false,
         errorMessage: ""
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/governorDecreesYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
     };
 
     fetchLastReport = (): void => {
@@ -70,10 +80,11 @@ export default class GovernorDecreesMonitoringPage extends Component<GovernorDec
 
     componentDidMount(): void {
         this.fetchLastReport();
+        this.fetchYearsArrange();
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, filteredMonth, isUpdating, error, errorMessage} = this.state;
+        const {report, filteredYear, years, filteredMonth, isUpdating, error, errorMessage} = this.state;
         const subNavItems = [{label: "Общая информация", href: "/regional_legislation_monitoring/main", as: "/regional_legislation_monitoring/main"},
             {label: "Законы Свердловской области", href: "/regional_legislation_monitoring/regional_law", as: "/regional_legislation_monitoring/regional_law"},
             {label: "Указы губернатора", href: "/regional_legislation_monitoring/governor_decrees", as: "/regional_legislation_monitoring/governor_decrees"},
@@ -86,7 +97,7 @@ export default class GovernorDecreesMonitoringPage extends Component<GovernorDec
             {itemValue: 8, label: "Август"}, {itemValue: 9, label: "Сентябрь"}, {itemValue: 10, label: "Октябрь"},
             {itemValue: 11, label: "Ноябрь"}, {itemValue: 12, label: "Декабрь"}];
 
-        const yearsFilterItems = [{itemValue: 2010, label: "2010"}, {itemValue: 2009, label: "2009"}];
+        const yearsFilterItems = years.map(year => Object({itemValue: year.year, label: year.year.toString()}));
 
         return (
             <>
@@ -98,8 +109,8 @@ export default class GovernorDecreesMonitoringPage extends Component<GovernorDec
                     <h1 className="text-center page__title">Мониторинг указов Губернатора Свердловской области</h1>
                     <div className="container">
                         <div className="filters_container">
-                            <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
-                            <NewsFilter filterName="Фильтр по месяцам" fetchFunc={this.filterByMonth} filterItems={monthsFilterItems}/>
+                            <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
+                            <NewsFilter filterName="Месяц" fetchFunc={this.filterByMonth} filterItems={monthsFilterItems}/>
                         </div>
                         {(filteredYear !== 0 && filteredMonth !== 0) && <h2 className="text-center page__title">{`${filteredYear} Год ${resolveMonths(filteredMonth)}`}</h2>}
                         {(isUpdating && !error) && <UpdateComponent/>}

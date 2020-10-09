@@ -23,5 +23,5 @@ export class CorruptionDocs extends Model<CorruptionDocs> {
 
     @AllowNull(false)
     @Column(DataType.BOOLEAN)
-    report: boolean;
+    is_report: boolean;
 }

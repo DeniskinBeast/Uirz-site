@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: "Times New Roman", Times, serif;
+    font-family: 'Source Serif Pro', serif;
     background: rgba(244, 244, 244, 0.5);
 }
 
@@ -19,10 +19,14 @@ body {
     background: #607afc;
 }
 
-.btn:hover, .btn:focus {
+.btn:hover, .btn:active {
     box-shadow: none;
     color: #607afc;
     background: #fff;
+}
+
+.btn:focus {
+    box-shadow: none;
 }
 
 .btn_container {
@@ -31,7 +35,7 @@ body {
 }
 
 .content {
-    margin: 56px 0;
+    margin: 71px 0;
     position: relative;
 }
 
@@ -40,7 +44,6 @@ body {
 }
 
 .uninews_link:hover {
-    color: #fff;
     text-decoration: none;
 }
 
@@ -51,6 +54,14 @@ body {
 .page-item {
     color: #607afc;
     cursor: pointer;
+}
+
+.page-item_active .page-link {
+    background-color: #607afc !important;
+}
+
+.page-link:active, .page-link:focus {
+    box-shadow: none;
 }
 
 .overlay {

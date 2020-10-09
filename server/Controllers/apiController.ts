@@ -7,7 +7,7 @@ import {ConstituentDocs} from "../Models/ConstituentDocs";
 import {CorruptionDocs} from "../Models/CorruptionDocs";
 import {LegislationStatusReports} from "../Models/LegislationStatusReports";
 import {Publications} from "../Models/Publications";
-import {Op} from "sequelize";
+import {Op, QueryTypes} from "sequelize";
 import {LegislationReviews} from "../Models/LegislationReviews";
 import {FederalLegislationMonitoring} from "../Models/FederalLegislationMonitoring";
 import {WorkingGroup} from "../Models/WorkingGroup";
@@ -69,6 +69,12 @@ export async function lawNewsPage(req: Request, res: Response) {
     res.send(JSON.stringify(lawNews));
 }
 
+export async function lawNewsYears(_req: Request, res: Response) {
+    const years = await LawNews.sequelize?.query("SELECT DISTINCT to_char(date, 'YYYY') as year from newslaw ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 // @ts-ignore
 export async function lawNewsPageNewsCount(req: Request, res: Response) {
     const lawNewsCount = await LawNews.count();
@@ -123,6 +129,12 @@ export async function InstNewsPage(req: Request, res: Response) {
     });
 
     res.send(JSON.stringify(instNews));
+}
+
+export async function instNewsYears(_req: Request, res: Response) {
+    const years = await InstNews.sequelize?.query("SELECT DISTINCT to_char(date, 'YYYY') as year from newsinst ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 // @ts-ignore
@@ -183,7 +195,7 @@ export async function corruptionCounteringPageLocalActs(req: Request, res: Respo
     const localActs = await CorruptionDocs.findAll(
         {
             where: {
-                report: false
+                is_report: false
             }
         }
     );
@@ -196,7 +208,7 @@ export async function corruptionCounteringPageReports(req: Request, res: Respons
     const corruptionReports = await CorruptionDocs.findAll(
         {
             where: {
-                report: true
+                is_report: true
             }
         }
     );
@@ -238,6 +250,12 @@ export async function legislationReviewsPage(req: Request, res: Response) {
     });
 
     res.send(JSON.stringify(reviews));
+}
+
+export async function legislationReviewsPageYears(_req: Request, res: Response) {
+    const years = await LegislationReviews.sequelize?.query("SELECT DISTINCT year FROM legislationreviews ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 // @ts-ignore
@@ -284,6 +302,12 @@ export async function federalLegislationMonitoringPageLast(req: Request, res: Re
     });
 
     res.send(JSON.stringify(report));
+}
+
+export async function federalLegislationYears(_req: Request, res: Response) {
+    const years = await FederalLegislationMonitoring.sequelize?.query("SELECT DISTINCT year FROM federallegislationmonitoring ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 export async function federalLegislationMonitoringPageByYear(req: Request, res: Response) {
@@ -367,6 +391,12 @@ export async function expertsCouncilPastMeetingsPage(req: Request, res: Response
     res.send(JSON.stringify(instNews));
 }
 
+export async function expertsCouncilPastMeetingsYears(_req: Request, res: Response) {
+    const years = await InstNews.sequelize?.query("SELECT DISTINCT to_char(date, 'YYYY') as year from newsinst WHERE nesovet=0 OR nesovet IS NULL ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 // @ts-ignore
 export async function expertsCouncilPastMeetingsPageCount(req: Request, res: Response) {
     const newsCount = await InstNews.count({
@@ -433,6 +463,12 @@ export async function expertsCouncilPageLastWorkingGroups(req: Request, res: Res
     });
 
     res.send(JSON.stringify(lastGroups));
+}
+
+export async function expertsCouncilWorkingGroupYears(_req: Request, res: Response) {
+    const years = await WorkingGroup.sequelize?.query("SELECT DISTINCT to_char(date, 'YYYY') as year from workinggroup ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 export async function expertsCouncilWorkingGroupPage(req: Request, res: Response) {
@@ -503,6 +539,12 @@ export async function regionalLegislationPageGeneralDocumentsLast(_req: Request,
     res.send(JSON.stringify(report));
 }
 
+export async function regionalLegislationGeneralDocumentsYears(_req: Request, res: Response) {
+    const years = await RegionalLegislationMonitoring.sequelize?.query("SELECT DISTINCT year FROM regionallegislationmonitoring WHERE type='general_docs' ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 export async function regionalLegislationPageGeneralDocumentsByYear(req: Request, res: Response) {
     const year = parseInt(req.params.year);
 
@@ -531,6 +573,13 @@ export async function regionalLegislationPageGovernmentDecreesLast(_req: Request
     });
 
     res.send(JSON.stringify(report));
+}
+
+export async function regionalLegislationGovernmentDecreesYears(_req: Request, res: Response) {
+    const years = await RegionalLegislationMonitoring.sequelize?.query("SELECT DISTINCT year FROM regionallegislationmonitoring WHERE type='government_decrees' ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    console.log(years);
+    res.send(JSON.stringify(years));
 }
 
 export async function regionalLegislationPageGovernmentDecreesByYear(req: Request, res: Response) {
@@ -581,6 +630,12 @@ export async function regionalLegislationPageGovernorDecreesLast(_req: Request, 
     res.send(JSON.stringify(report));
 }
 
+export async function regionalLegislationGovernorDecreesYears(_req: Request, res: Response) {
+    const years = await RegionalLegislationMonitoring.sequelize?.query("SELECT DISTINCT year FROM regionallegislationmonitoring WHERE type='governor_decrees' ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 export async function regionalLegislationPageGovernorDecreesByYear(req: Request, res: Response) {
     const year = parseInt(req.params.year);
 
@@ -629,6 +684,12 @@ export async function regionalLegislationPageRegionLawLast(_req: Request, res: R
     res.send(JSON.stringify(report));
 }
 
+export async function regionalMonitoringRegionLawYears(_req: Request, res: Response) {
+    const years = await RegionalLegislationMonitoring.sequelize?.query("SELECT DISTINCT year FROM regionallegislationmonitoring WHERE type='regional_law' ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 export async function regionalLegislationPageRegionLawByYear(req: Request, res: Response) {
     const year = parseInt(req.params.year);
 
@@ -673,6 +734,12 @@ export async function actsDevPageLastReport(_req: Request, res: Response) {
     res.send(JSON.stringify(report));
 }
 
+export async function actsDevYears(_req: Request, res:Response) {
+    const years = await ActsDevelopment.sequelize?.query("SELECT DISTINCT year from actsdevelopment ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 export async function actsDevPageReportByYear(req: Request, res: Response) {
     const year = parseInt(req.params.year);
 
@@ -693,6 +760,12 @@ export async function legalExpertisePageLastReport(_req: Request, res: Response)
     });
 
     res.send(JSON.stringify(report));
+}
+
+export async function legalExpertiseYears(_req: Request, res: Response) {
+    const years = await LegalExpertise.sequelize?.query("SELECT DISTINCT year FROM legalexpertise ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 export async function legalExpertisePageReportByYear(req: Request, res: Response) {
@@ -717,6 +790,12 @@ export async function legislationAnalysisPageLastReport(_req: Request, res: Resp
     res.send(JSON.stringify(report));
 }
 
+export async function legislationAnalysisYears(_req: Request, res: Response) {
+    const years = await LegislationAnalysis.sequelize?.query("SELECT DISTINCT year FROM legislationanalysis ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
+}
+
 export async function legislationAnalysisPageReportByYear(req: Request, res: Response) {
     const year = parseInt(req.params.year);
 
@@ -737,6 +816,12 @@ export async function eventsParticipationPageLastReport(_req: Request, res: Resp
     });
 
     res.send(JSON.stringify(report));
+}
+
+export async function eventsParticipationYears(_req: Request, res: Response) {
+    const years = await EventsParticipation.sequelize?.query("SELECT DISTINCT year FROM eventsparticipation ORDER BY year DESC", {type: QueryTypes.SELECT});
+
+    res.send(JSON.stringify(years));
 }
 
 export async function eventsParticipationReportByYear(req:Request, res: Response) {

@@ -50,7 +50,7 @@ function renderProfileCard(profileCard: ProfileCardData) {
                     <li className="list-group-item">Email: {profileCard.email}</li>
                 </ul>
                 <div className="card-footer">
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target={"#" + cardId}>Подробнее</button>
+                    <button type="button" className="btn" data-toggle="modal" data-target={"#" + cardId}>Подробнее</button>
                 </div>
             </div>
         </div>

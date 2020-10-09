@@ -19,7 +19,7 @@ function renderDocCard(docCard: DocsCardData) {
                 </div>
                 {docCard.doc_path &&
                 <div className="card-footer">
-                    <a className="btn btn-outline-secondary card-button" href={docCard.doc_path} target="_blank">Просмотр</a>
+                    <a className="btn card-button" href={docCard.doc_path} target="_blank">Просмотр</a>
                 </div>}
             </div>
         </div>

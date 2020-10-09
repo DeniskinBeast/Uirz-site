@@ -3,8 +3,6 @@ import ReactHtmlParser from "react-html-parser";
 
 import styles from "./modalInfo.module.css";
 
-import {deleteSymbols} from "../../Scripts/deleteSymbols";
-
 interface ModalInfoProps {
     id: string;
     title: string;
@@ -14,7 +12,6 @@ interface ModalInfoProps {
 }
 
 export function ModalInfo({id, title, subtitle, pic, text}: ModalInfoProps) {
-    const clearText = deleteSymbols(text);
     return (
         <div className="modal fade" id={id} tabIndex={-1} role="dialog" aria-labelledby="modal_info_1_title" aria-hidden="true">
             <div className="modal-dialog" role="document">
@@ -33,7 +30,7 @@ export function ModalInfo({id, title, subtitle, pic, text}: ModalInfoProps) {
                             </div>
                             <h5 className={styles.header__subtitle}>{subtitle}</h5>
                         </div>
-                        <div>{ReactHtmlParser(clearText)}</div>
+                        <div>{ReactHtmlParser(text)}</div>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary"

@@ -77,12 +77,12 @@ export default class MainPage extends Component<MainPageState> {
                                 Законодательного Собрания Свердловской области от 20 мая 1996 года № 24 с целью
                                 совершенствования нормотворческой деятельности в Свердловской области, повышения
                                 качества ее законодательства. </p><p>В Институте была сформирована группа консультантов
-                            из высококвалифицированных юристов, в состав <Link href="/structure" as="structure#third"><a>Экспертного
+                            из высококвалифицированных юристов, в состав <Link href="/experts_council/main"><a>Экспертного
                                 совета</a></Link> вошли ведущие ученые-юристы Свердловской области. </p>
                             <p>С 1996 по 2008 год Институт возглавлял Алексей Владимирович Лобашев. С 2008 года -
                                 Михаил Викторович Кучин. С 2012 года
-                                Институтом руководит <a href="?x=clerk&amp;k=1" className="ref">Николай Андреевич
-                                    Воронин</a>.</p>
+                                Институтом руководит <Link href="/structure#sector_1_50"><a>Николай Андреевич
+                                    Воронин</a></Link>.</p>
 
                             <p>На основании Указа Губернатора Свердловской области от 14 октября 2011 года № 904-УГ
                                 изменено наименование Института на государственное казённое учреждение Свердловской
@@ -137,13 +137,12 @@ export default class MainPage extends Component<MainPageState> {
                                 к компетенции соответствующих государственных органов Свердловской области. </p>
 
                             <p>В соответствии с федеральным законодательством Институтом принята Учетная политика <a
-                                target="_blank" href="Publ/uchet-politika.pdf" className="ref">(Основные положения
-                                Учетной политики)</a> и новое <a target="_blank" href="Publ/pers_dan.pdf"
-                                                                 className="ref">Положение об обработке персональных
+                                target="_blank" href="/docs/mainpage_docs/uchet-politika.pdf">(Основные положения
+                                Учетной политики)</a> и новое <a target="_blank" href="/docs/mainpage_docs/pers_dan.pdf">Положение об обработке персональных
                                 данных в Уральском институте регионального законодательства</a>. </p>
                             <p>В соответствии с федеральным законодательством в Институте проведена специальная оценка
                                 условий труда, по результатам которой подготовлен и утвержден отчет от 26 сентября 2019
-                                года. <a target="_blank" href="Publ/Svod_vedomost.pdf">(Сводная
+                                года. <a target="_blank" href="/docs/mainpage_docs/Svod_vedomost.pdf">(Сводная
                                     ведомость результатов проведения специальной оценки условий труда). </a></p>
                         <h1 id="instNews" className="text-center page__title">Новости института</h1>
                         {!error && <NewsCards newsCards={lastInstNews} cardsType="inst_news"/>}
@@ -157,7 +156,7 @@ export default class MainPage extends Component<MainPageState> {
                         {!error && <NewsCards newsCards={lastLawNews} cardsType="law_news"/>}
                         {!error && <div className="btn_container">
                             <Link href="/lawNews/[lawNewsPage]" as="/lawNews/0">
-                                <a className="btn btn-outline-secondary uninews_link">Читать все новости</a>
+                                <a className="btn uninews_link">Читать все новости</a>
                             </Link>
                         </div>}
                         {error && <ErrorComponent errorMessage={errorMessage}/>}

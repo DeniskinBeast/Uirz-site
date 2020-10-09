@@ -1,26 +1,27 @@
 .header {
-    height: 100px;
-    /*width: 100%;
-    height: auto;*/
-    /*background-image: url("../public/uirz_shapka.jpg");*/
-    /*background-size: cover;*/
-    /*background-position: center;*/
-}
-
-.overlay_1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
-    min-width: 100%;
-    z-index: 1300;
-    background: rgba(244, 244, 244, 0.5);
-}
-
-.bla_img {
-    height: 100px;
-    width: 100%;
     height: auto;
-    width: inherit;
-    height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #607afc, #9AB3D1);
+}
+
+.test {
+    margin-left: 10px;
+    padding-top: 20px;
+    font-size: 30pt;
+    color: #fff;
+}
+
+@media screen and (max-width: 500px) {
+    .test {
+        margin-left: 0;
+        font-size: 18pt;
+        text-align: center;
+    }
+}
+
+.logo {
+    margin: 10px;
+    max-height: 100px;
 }

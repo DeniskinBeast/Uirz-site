@@ -1,3 +1,7 @@
+.dropdown_item {
+    color: #607afc
+}
+
 .dropdown_item:hover {
     color: #fff;
     background: #607afc;

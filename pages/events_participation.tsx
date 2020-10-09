@@ -16,6 +16,7 @@ import { UpdateComponent } from "../Components/UpdateComponent";
 interface EventsParticipationPageState {
     report: LegislationMonitoringData,
     filteredYear: number,
+    years: {year: number}[]
     isUpdating: boolean,
     error: boolean,
     errorMessage: string
@@ -25,10 +26,19 @@ export default class EventsParticipation extends Component<EventsParticipationPa
     state: EventsParticipationPageState = {
         report: {text: "", month: 0, year: 0},
         filteredYear: 0,
+        years: [],
         isUpdating: false,
         error: false,
         errorMessage: ""
-    }
+    };
+
+    fetchYearsArrange = (): void => {
+        fetch("/api/v1/eventsParticipationYears")
+            .then(connectionErrorHandler)
+            .then(response => response.json())
+            .then(years => this.setState({years: years}))
+            .catch(err => this.setState({error: true, errorMessage: err.message}));
+    };
 
     fetchLastReport = (): void => {
         fetch("/api/v1/eventsParticipationLastReport")
@@ -54,14 +64,14 @@ export default class EventsParticipation extends Component<EventsParticipationPa
 
     componentDidMount(): void {
         this.fetchLastReport();
+        this.fetchYearsArrange();
     }
 
     render(): React.ReactElement {
-        const {report, filteredYear, isUpdating, error, errorMessage} = this.state;
+        const {report, filteredYear, years, isUpdating, error, errorMessage} = this.state;
 
-        const yearsFilterItems = [{itemValue: 2013, label: "2013"}, {itemValue: 2014, label: "2014"},
-         {itemValue: 2015, label: "2015"}, {itemValue: 2016, label: "2016"}, {itemValue: 2017, label: "2017"}, {itemValue: 2018, label: "2018"}];
-        
+        const yearsFilterItems = years.map(year => Object({itemValue: year.year, label: year.year.toString()}));
+
         return (
             <>
                 <Layout title="Выступления и участие в мероприятиях"/>
@@ -71,7 +81,7 @@ export default class EventsParticipation extends Component<EventsParticipationPa
                     <UpButton to="events_participation"/>
                     <h1 id="events_participation" className="text-center page__title">Выступления и участие в мероприятиях</h1>
                     <div className="container">
-                        <NewsFilter filterName="Фильтр по годам" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
+                        <NewsFilter filterName="Год" fetchFunc={this.filterByYear} filterItems={yearsFilterItems}/>
                         {filteredYear !== 0 && <h2 className="text-center page__title">{`${filteredYear} Год`}</h2>}
                         {(isUpdating && !error) && <UpdateComponent/>}
                         {(report.text.length === 0 && !error) && <LoadingComponent/>}

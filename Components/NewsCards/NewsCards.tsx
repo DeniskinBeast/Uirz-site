@@ -5,7 +5,6 @@ import {NewsCardData} from "../../Types/NewsCardData";
 import {ModalInfo} from "../ModalInfo/ModalInfo";
 
 import styles from "./newsCards.module.css";
-import {deleteSymbols} from "../../Scripts/deleteSymbols";
 
 interface NewsCardsProps {
     newsCards: NewsCardData[],
@@ -15,7 +14,6 @@ interface NewsCardsProps {
 function renderNewsCard(newsCard: NewsCardData, cardsType: "law_news" | "inst_news" | "working_group") {
     const imgDirPath = `/${cardsType}/`;
     const imgPath = imgDirPath + newsCard.pic;
-    const clearAnons = deleteSymbols(newsCard.anons);
     const cardId = cardsType + newsCard.id;
 
     return (
@@ -30,11 +28,11 @@ function renderNewsCard(newsCard: NewsCardData, cardsType: "law_news" | "inst_ne
                     <h4 className={"card-title " + styles.card__title}>{ReactHtmlParser(newsCard.name)}</h4>
                     <h5 className="card-subtitle">{newsCard.date}</h5>
                     <p className="card-text">
-                        {ReactHtmlParser(clearAnons)}
+                        {ReactHtmlParser(newsCard.anons)}
                     </p>
                 </div>
                 <div className="card-footer">
-                    <button type="button" className="btn btn-outline-secondary card-button" data-toggle="modal" data-target={"#" + cardId}>Читать</button>
+                    <button type="button" className="btn card-button" data-toggle="modal" data-target={"#" + cardId}>Читать</button>
                 </div>
             </div>
         </div>
